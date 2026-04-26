@@ -68,6 +68,7 @@ File `.env` tidak boleh dicommit. Gunakan `.env.example` sebagai template untuk 
 - `docs/UAS-NGINX-DEPLOYMENT-PREP.md`
 - `docs/UAS-DEPLOYMENT-PREFLIGHT.md`
 - `docs/UAS-DEPLOYMENT-COMMANDS.md`
+- `docs/UAS-VPS-DEPLOYMENT-RUNBOOK.md`
 
 ## Catatan Audit Dependency
 
