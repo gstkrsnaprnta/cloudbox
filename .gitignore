@@ -1,0 +1,10 @@
+.env
+.env.*
+!.env.example
+node_modules
+dist
+*.db
+*.sqlite
+backend/prisma/dev.db-journal
+coverage
+.DS_Store

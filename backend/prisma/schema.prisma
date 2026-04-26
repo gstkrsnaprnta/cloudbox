@@ -1,0 +1,94 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id           Int      @id @default(autoincrement())
+  name         String
+  email        String   @unique
+  passwordHash String   @map("password_hash")
+  role         String   @default("user")
+  orders       Order[]
+  cloudBoxes   CloudBox[]
+  createdAt    DateTime @default(now()) @map("created_at")
+  updatedAt    DateTime @updatedAt @map("updated_at")
+
+  @@map("users")
+}
+
+model Package {
+  id          Int      @id @default(autoincrement())
+  name        String
+  slug        String   @unique
+  description String
+  price       Int
+  cpuLimit    String   @map("cpu_limit")
+  ramLimit    String   @map("ram_limit")
+  activeDays  Int      @map("active_days")
+  isActive    Boolean  @default(true) @map("is_active")
+  orders      Order[]
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+
+  @@map("packages")
+}
+
+model Order {
+  id               Int      @id @default(autoincrement())
+  userId           Int      @map("user_id")
+  packageId        Int      @map("package_id")
+  externalId       String   @unique @map("external_id")
+  xenditInvoiceId  String?  @unique @map("xendit_invoice_id")
+  invoiceUrl       String?  @map("invoice_url")
+  amount           Int
+  status           String   @default("PENDING")
+  paidAt           DateTime? @map("paid_at")
+  provisionedAt    DateTime? @map("provisioned_at")
+  provisionStatus  String   @default("NOT_STARTED") @map("provision_status")
+  user             User     @relation(fields: [userId], references: [id])
+  package          Package  @relation(fields: [packageId], references: [id])
+  cloudBox         CloudBox?
+  webhookLogs      WebhookLog[]
+  createdAt        DateTime @default(now()) @map("created_at")
+  updatedAt        DateTime @updatedAt @map("updated_at")
+
+  @@map("orders")
+}
+
+model CloudBox {
+  id            Int      @id @default(autoincrement())
+  userId        Int      @map("user_id")
+  orderId       Int      @unique @map("order_id")
+  containerName String   @unique @map("container_name")
+  hostname      String
+  sshHost       String   @map("ssh_host")
+  sshPort       Int      @unique @map("ssh_port")
+  webPort       Int      @unique @map("web_port")
+  username      String
+  password      String
+  publicUrl     String   @map("public_url")
+  status        String   @default("CREATING")
+  expiresAt     DateTime @map("expires_at")
+  user          User     @relation(fields: [userId], references: [id])
+  order         Order    @relation(fields: [orderId], references: [id])
+  createdAt     DateTime @default(now()) @map("created_at")
+  updatedAt     DateTime @updatedAt @map("updated_at")
+
+  @@map("cloud_boxes")
+}
+
+model WebhookLog {
+  id        Int      @id @default(autoincrement())
+  orderId   Int?     @map("order_id")
+  eventType String?  @map("event_type")
+  payload   String
+  order     Order?   @relation(fields: [orderId], references: [id])
+  createdAt DateTime @default(now()) @map("created_at")
+
+  @@map("webhook_logs")
+}

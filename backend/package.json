@@ -1,0 +1,31 @@
+{
+  "name": "cloudbox-backend",
+  "version": "1.0.0",
+  "description": "CloudBox MID/UTS backend with Express, Prisma, JWT, and Xendit invoices.",
+  "main": "src/server.js",
+  "type": "module",
+  "scripts": {
+    "dev": "nodemon src/server.js",
+    "start": "node src/server.js",
+    "prisma:generate": "prisma generate",
+    "prisma:migrate": "node scripts/ensure-sqlite-db.js && prisma migrate deploy",
+    "prisma:migrate:dev": "prisma migrate dev",
+    "prisma:studio": "prisma studio",
+    "seed": "node prisma/seed.js",
+    "lint": "node --check src/server.js && node --check src/app.js && node --check src/routes/authRoutes.js && node --check src/routes/boxRoutes.js && node --check src/routes/orderRoutes.js && node --check src/routes/packageRoutes.js && node --check src/routes/xenditRoutes.js && node --check src/services/dockerService.js && node --check src/services/provisioningService.js && node --check src/services/xenditService.js && node --check scripts/check-xendit-invoice.js && node --check scripts/ensure-sqlite-db.js"
+  },
+  "dependencies": {
+    "@prisma/client": "^6.19.3",
+    "bcryptjs": "^2.4.3",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
+    "jsonwebtoken": "^9.0.2",
+    "morgan": "^1.10.0",
+    "zod": "^3.24.1"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.9",
+    "prisma": "^6.19.3"
+  }
+}

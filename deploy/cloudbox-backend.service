@@ -1,0 +1,17 @@
+[Unit]
+Description=CloudBox Backend Service
+After=network.target docker.service
+Requires=docker.service
+
+[Service]
+Type=simple
+WorkingDirectory=/var/www/cloudbox/backend
+EnvironmentFile=/var/www/cloudbox/backend/.env
+ExecStart=/usr/bin/node src/server.js
+Restart=always
+RestartSec=5
+User=root
+Group=root
+
+[Install]
+WantedBy=multi-user.target
