@@ -1,6 +1,6 @@
-# CloudBox
+# KloudBox
 
-CloudBox adalah SaaS simulasi VPS mini. Implementasi saat ini sengaja fokus pada fase MID/UTS: REST API Xendit, simulasi environment lewat `.env`, dashboard order, webhook payment, dan CLI untuk cek invoice.
+KloudBox adalah SaaS simulasi VPS mini. Implementasi saat ini sengaja fokus pada fase MID/UTS: REST API Xendit, simulasi environment lewat `.env`, dashboard order, webhook payment, dan CLI untuk cek invoice.
 
 Fitur Docker provisioning, SSH container, Nginx production, Certbot, dan deployment penuh disiapkan sebagai target fase UAS. Pada fase ini provisioning hanya berupa stub `provisionCloudBoxAfterPayment(order)`.
 

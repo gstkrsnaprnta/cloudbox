@@ -8,7 +8,7 @@ import "./styles.css";
 const rootElement = document.getElementById("root");
 
 if (!rootElement) {
-  throw new Error("CloudBox root element not found.");
+  throw new Error("KloudBox root element not found.");
 }
 
 ReactDOM.createRoot(rootElement).render(

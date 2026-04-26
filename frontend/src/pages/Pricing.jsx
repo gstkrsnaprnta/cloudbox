@@ -56,7 +56,7 @@ export function Pricing() {
         {packages.map((pkg) => (
           <article className="pricing-card" key={pkg.id}>
             <div>
-              <p className="eyebrow">CloudBox Package</p>
+              <p className="eyebrow">KloudBox Package</p>
               <h2>{pkg.name}</h2>
               <p>{pkg.description}</p>
             </div>

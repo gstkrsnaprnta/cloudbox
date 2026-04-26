@@ -3,7 +3,7 @@ import dotenv from "dotenv";
 dotenv.config();
 
 export const env = {
-  appName: process.env.APP_NAME || "CloudBox",
+  appName: process.env.APP_NAME || "KloudBox",
   appEnv: process.env.APP_ENV || "development",
   appDebug: process.env.APP_DEBUG === "true",
   appUrl: process.env.APP_URL || "http://localhost:5000",

@@ -1,6 +1,6 @@
-# CloudBox Firewall Setup
+# KloudBox Firewall Setup
 
-Gunakan UFW untuk membuka akses minimum yang dibutuhkan CloudBox MVP.
+Gunakan UFW untuk membuka akses minimum yang dibutuhkan KloudBox MVP.
 
 ## Commands
 
@@ -15,7 +15,7 @@ sudo ufw status
 ## Notes
 
 - `OpenSSH` menjaga akses admin ke VPS utama.
-- `Nginx Full` membuka HTTP dan HTTPS untuk aplikasi CloudBox.
+- `Nginx Full` membuka HTTP dan HTTPS untuk aplikasi KloudBox.
 - `2201/tcp` membuka SSH container demo `Student Box`.
 - Untuk user/container tambahan, tambahkan port SSH mapping lain secara eksplisit.
 - Jangan membuka port Docker daemon ke internet.

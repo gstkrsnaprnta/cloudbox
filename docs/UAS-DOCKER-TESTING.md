@@ -1,6 +1,6 @@
-# CloudBox UAS Docker Testing
+# KloudBox UAS Docker Testing
 
-Panduan ini hanya untuk UAS tahap 1: Docker image lokal/server untuk user container CloudBox. Jangan lanjut ke Nginx production, domain, Certbot, systemd, atau deployment production pada tahap ini.
+Panduan ini hanya untuk UAS tahap 1: Docker image lokal/server untuk user container KloudBox. Jangan lanjut ke Nginx production, domain, Certbot, systemd, atau deployment production pada tahap ini.
 
 ## 1. Build Image
 
@@ -109,10 +109,10 @@ cat > /tmp/cloudbox-demo-site/index.html <<'EOF'
 <!doctype html>
 <html>
   <head>
-    <title>CloudBox Demo Site</title>
+    <title>KloudBox Demo Site</title>
   </head>
   <body>
-    <h1>Hello from CloudBox Student Box</h1>
+    <h1>Hello from KloudBox Student Box</h1>
     <p>This static website was uploaded with SCP.</p>
   </body>
 </html>

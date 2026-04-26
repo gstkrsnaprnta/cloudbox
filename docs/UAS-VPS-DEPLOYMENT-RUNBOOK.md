@@ -1,6 +1,6 @@
-# CloudBox UAS Tahap 4B - VPS Deployment Runbook HTTP/IP
+# KloudBox UAS Tahap 4B - VPS Deployment Runbook HTTP/IP
 
-Runbook ini dipakai untuk deploy CloudBox ke Tencent VPS lewat HTTP biasa atau IP server terlebih dahulu. Jangan jalankan Certbot dan jangan setup HTTPS pada tahap ini. Domain boleh masih belum resolve; semua pengujian bisa memakai IP publik VPS.
+Runbook ini dipakai untuk deploy KloudBox ke Tencent VPS lewat HTTP biasa atau IP server terlebih dahulu. Jangan jalankan Certbot dan jangan setup HTTPS pada tahap ini. Domain boleh masih belum resolve; semua pengujian bisa memakai IP publik VPS.
 
 ## Scope Tahap 4B
 
@@ -8,7 +8,7 @@ Runbook ini dipakai untuk deploy CloudBox ke Tencent VPS lewat HTTP biasa atau I
 - Deploy frontend build React/Vite ke Nginx.
 - Build Docker image `cloudbox-static-ssh` di VPS.
 - Jalankan backend sebagai systemd service.
-- Akses CloudBox lewat HTTP/IP.
+- Akses KloudBox lewat HTTP/IP.
 - Uji provisioning Docker melalui endpoint development `mark-paid`.
 - Uji SSH container dan upload static website.
 
@@ -55,7 +55,7 @@ Jika repo lokal belum pernah dibuat:
 ```bash
 git init
 git add .
-git commit -m "Implement CloudBox MID and UAS deployment prep"
+git commit -m "Implement KloudBox MID and UAS deployment prep"
 git branch -M main
 git remote add origin https://github.com/gstkrsnaprnta/cloudbox.git
 git push -u origin main
@@ -72,10 +72,10 @@ git push
 
 ## 3. SSH ke Tencent VPS
 
-Ganti `IP_VPS_TENCENT` dengan IP publik server.
+Gunakan user VPS `ubuntu` dan IP publik Tencent berikut.
 
 ```bash
-ssh root@IP_VPS_TENCENT
+ssh ubuntu@43.133.144.235
 ```
 
 ## 4. Update Server
@@ -137,23 +137,23 @@ cp .env.example .env
 nano .env
 ```
 
-Contoh isi untuk demo HTTP/IP. Ganti `IP_VPS_TENCENT` dan isi secret dengan nilai test/sandbox yang valid. Jangan commit file `.env`.
+Contoh isi untuk demo HTTP/IP. Gunakan domain `kloudbox.my.id` dan isi secret dengan nilai test/sandbox yang valid. Jangan commit file `.env`.
 
 ```env
-APP_NAME=CloudBox
+APP_NAME=KloudBox
 APP_ENV=production
 APP_DEBUG=false
-APP_URL=http://IP_VPS_TENCENT
-FRONTEND_URL=http://IP_VPS_TENCENT
+APP_URL=http://kloudbox.my.id
+FRONTEND_URL=http://kloudbox.my.id
 PORT=5000
 DATABASE_URL=file:/var/www/cloudbox/backend/prisma/prod.db
 JWT_SECRET=ISI_SECRET_PANJANG_SENDIRI
 XENDIT_SECRET_KEY=ISI_XENDIT_TEST_SECRET_KEY
 XENDIT_CALLBACK_TOKEN=ISI_XENDIT_CALLBACK_TOKEN
-XENDIT_SUCCESS_REDIRECT_URL=http://IP_VPS_TENCENT/dashboard?payment=success
-XENDIT_FAILURE_REDIRECT_URL=http://IP_VPS_TENCENT/pricing?payment=failed
+XENDIT_SUCCESS_REDIRECT_URL=http://kloudbox.my.id/dashboard?payment=success
+XENDIT_FAILURE_REDIRECT_URL=http://kloudbox.my.id/pricing?payment=failed
 DOCKER_IMAGE=cloudbox-static-ssh
-SSH_HOST=IP_VPS_TENCENT
+SSH_HOST=kloudbox.my.id
 SSH_PORT_START=2201
 WEB_PORT_START=8081
 DEFAULT_BOX_USERNAME=student
@@ -208,7 +208,7 @@ sudo docker images | grep cloudbox-static-ssh
 
 ## 14. Setup Nginx HTTP
 
-Copy konfigurasi Nginx CloudBox:
+Copy konfigurasi Nginx KloudBox:
 
 ```bash
 cd /var/www/cloudbox
@@ -222,14 +222,14 @@ sudo systemctl reload nginx
 Konfigurasi `deploy/nginx-cloudbox.conf` masih memakai placeholder domain:
 
 ```txt
-cloudbox.online
-www.cloudbox.online
+kloudbox.my.id
+www.kloudbox.my.id
 ```
 
-Nginx tetap bisa diuji via IP jika request memakai server default yang aktif. Jika browser via IP belum masuk ke site CloudBox, sementara ganti baris `server_name` di `/etc/nginx/sites-available/cloudbox` menjadi:
+Nginx tetap bisa diuji via IP jika request memakai server default yang aktif. Jika browser via IP belum masuk ke site KloudBox, sementara ganti baris `server_name` di `/etc/nginx/sites-available/cloudbox` menjadi:
 
 ```nginx
-server_name cloudbox.online www.cloudbox.online IP_VPS_TENCENT _;
+server_name kloudbox.my.id www.kloudbox.my.id 43.133.144.235 _;
 ```
 
 Lalu jalankan:
@@ -281,26 +281,26 @@ curl http://localhost/api/health
 Dari laptop:
 
 ```bash
-curl http://IP_VPS_TENCENT/api/health
+curl http://kloudbox.my.id/api/health
 ```
 
-Expected response berisi status CloudBox API sehat.
+Expected response berisi status KloudBox API sehat.
 
 ## 18. Test Frontend dari Browser
 
 Buka:
 
 ```txt
-http://IP_VPS_TENCENT/
+http://kloudbox.my.id/
 ```
 
-Pastikan landing page CloudBox tampil, navbar terlihat, dan halaman pricing/login/register bisa dibuka.
+Pastikan landing page KloudBox tampil, navbar terlihat, dan halaman pricing/login/register bisa dibuka.
 
 ## 19. Test Register dan Login
 
 Dari browser:
 
-1. Buka `http://IP_VPS_TENCENT/register`.
+1. Buka `http://kloudbox.my.id/register`.
 2. Register user demo.
 3. Login.
 4. Buka dashboard.
@@ -308,11 +308,11 @@ Dari browser:
 Atau gunakan curl dari VPS/laptop:
 
 ```bash
-curl -X POST http://IP_VPS_TENCENT/api/auth/register \
+curl -X POST http://kloudbox.my.id/api/auth/register \
   -H "Content-Type: application/json" \
   -d '{"name":"Demo UAS","email":"demo-uas@example.com","password":"password123"}'
 
-curl -X POST http://IP_VPS_TENCENT/api/auth/login \
+curl -X POST http://kloudbox.my.id/api/auth/login \
   -H "Content-Type: application/json" \
   -d '{"email":"demo-uas@example.com","password":"password123"}'
 ```
@@ -322,13 +322,13 @@ Simpan JWT dari response login untuk test API berikutnya.
 ## 20. Test Packages dan Create Order
 
 ```bash
-curl http://IP_VPS_TENCENT/api/packages
+curl http://kloudbox.my.id/api/packages
 ```
 
 Ganti `JWT_TOKEN_HERE` dan `PACKAGE_ID_HERE`.
 
 ```bash
-curl -X POST http://IP_VPS_TENCENT/api/orders \
+curl -X POST http://kloudbox.my.id/api/orders \
   -H "Content-Type: application/json" \
   -H "Authorization: Bearer JWT_TOKEN_HERE" \
   -d '{"packageId": PACKAGE_ID_HERE}'
@@ -367,7 +367,7 @@ APP_DEBUG=false
 Test mark-paid:
 
 ```bash
-curl -X POST http://IP_VPS_TENCENT/api/orders/ORDER_ID_HERE/mark-paid \
+curl -X POST http://kloudbox.my.id/api/orders/ORDER_ID_HERE/mark-paid \
   -H "Authorization: Bearer JWT_TOKEN_HERE"
 ```
 
@@ -375,7 +375,7 @@ Expected:
 
 - Order berubah menjadi `PAID`.
 - Backend membuat atau reuse container `cloudbox-user-<userId>`.
-- CloudBox detail muncul di dashboard.
+- KloudBox detail muncul di dashboard.
 
 ## 22. Test Docker Provisioning
 
@@ -404,7 +404,7 @@ cloudbox-user-<userId>
 Dari laptop:
 
 ```bash
-ssh student@IP_VPS_TENCENT -p 2201
+ssh student@kloudbox.my.id -p 2201
 ```
 
 Password demo:
@@ -429,7 +429,7 @@ Buat website kecil di laptop:
 ```bash
 mkdir -p /tmp/cloudbox-demo-site
 cat > /tmp/cloudbox-demo-site/index.html <<'HTML'
-<h1>CloudBox UAS Deployment OK</h1>
+<h1>KloudBox UAS Deployment OK</h1>
 <p>Static website uploaded with SCP.</p>
 HTML
 ```
@@ -437,7 +437,7 @@ HTML
 Upload via SCP:
 
 ```bash
-scp -P 2201 -r /tmp/cloudbox-demo-site/* student@IP_VPS_TENCENT:/home/student/public_html/
+scp -P 2201 -r /tmp/cloudbox-demo-site/* student@kloudbox.my.id:/home/student/public_html/
 ```
 
 ## 25. Test Website Static
@@ -445,22 +445,22 @@ scp -P 2201 -r /tmp/cloudbox-demo-site/* student@IP_VPS_TENCENT:/home/student/pu
 Jika port `8081` dibuka sementara:
 
 ```txt
-http://IP_VPS_TENCENT:8081
+http://kloudbox.my.id:8081
 ```
 
 Lewat Nginx path routing:
 
 ```txt
-http://IP_VPS_TENCENT/sites/riansyah/
+http://kloudbox.my.id/sites/riansyah/
 ```
 
 Expected: HTML yang baru diupload tampil.
 
 ## 26. Test Control Box dari Dashboard
 
-Dari dashboard CloudBox:
+Dari dashboard KloudBox:
 
-1. Buka detail CloudBox.
+1. Buka detail KloudBox.
 2. Klik `Stop Box`.
 3. Cek `sudo docker ps -a`.
 4. Klik `Start Box`.
@@ -485,7 +485,7 @@ sudo lsof -i :5000
 sudo ss -ltnp | grep 5000
 ```
 
-Jika process lama CloudBox masih jalan:
+Jika process lama KloudBox masih jalan:
 
 ```bash
 sudo systemctl restart cloudbox-backend
@@ -616,9 +616,9 @@ Isi `.env` server dengan Xendit test/sandbox key valid. Untuk demo UAS, tetap gu
 Tahap 4B tidak bergantung domain. Gunakan IP:
 
 ```txt
-http://IP_VPS_TENCENT/
-http://IP_VPS_TENCENT/api/health
-http://IP_VPS_TENCENT/sites/riansyah/
+http://kloudbox.my.id/
+http://kloudbox.my.id/api/health
+http://kloudbox.my.id/sites/riansyah/
 ```
 
 Certbot hanya dijalankan setelah DNS A record domain benar-benar resolve ke IP VPS.
@@ -633,14 +633,14 @@ Certbot hanya dijalankan setelah DNS A record domain benar-benar resolve ke IP V
 - [ ] `docker build -t cloudbox-static-ssh .` berhasil.
 - [ ] `systemctl status cloudbox-backend` aktif/running.
 - [ ] `nginx -t` sukses.
-- [ ] Browser membuka CloudBox via IP/domain HTTP.
+- [ ] Browser membuka KloudBox via IP/domain HTTP.
 - [ ] Register/login user berhasil.
 - [ ] Dashboard order tampil.
 - [ ] `mark-paid` atau webhook membuat order `PAID`.
 - [ ] `docker ps` menampilkan container user.
 - [ ] SSH ke container user sebagai `student`.
 - [ ] SCP upload website ke `/home/student/public_html`.
-- [ ] Website static tampil via `http://IP_VPS_TENCENT/sites/riansyah/`.
+- [ ] Website static tampil via `http://kloudbox.my.id/sites/riansyah/`.
 
 ## PASS Criteria Tahap 4B
 
@@ -648,6 +648,6 @@ Certbot hanya dijalankan setelah DNS A record domain benar-benar resolve ke IP V
 - VPS bisa menjalankan backend systemd.
 - Nginx menyajikan frontend dan proxy `/api`.
 - Docker image user container berhasil dibuild di VPS.
-- Provisioning container bekerja dari CloudBox.
+- Provisioning container bekerja dari KloudBox.
 - SSH container dan SCP upload berhasil.
 - Website static user tampil lewat HTTP/IP.

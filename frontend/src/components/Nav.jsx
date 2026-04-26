@@ -15,7 +15,7 @@ export function Nav() {
     <header className="topbar">
       <Link className="brand" to="/">
         <Box size={24} />
-        <span>CloudBox</span>
+        <span>KloudBox</span>
       </Link>
       <nav className="navlinks">
         <NavLink to="/pricing">Pricing</NavLink>

@@ -43,13 +43,13 @@ export async function api(path, options = {}) {
       }
     });
   } catch {
-    throw new Error("Tidak bisa terhubung ke CloudBox API. Pastikan backend berjalan di localhost:5000.");
+    throw new Error("Tidak bisa terhubung ke KloudBox API. Pastikan backend berjalan di localhost:5000.");
   }
 
   const data = await response.json().catch(() => ({}));
 
   if (!response.ok) {
-    throw new Error(data.message || "CloudBox API request failed.");
+    throw new Error(data.message || "KloudBox API request failed.");
   }
 
   return data;

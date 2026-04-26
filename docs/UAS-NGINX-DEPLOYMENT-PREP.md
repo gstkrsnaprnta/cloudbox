@@ -1,8 +1,8 @@
-# CloudBox UAS Tahap 3: Nginx Deployment Prep
+# KloudBox UAS Tahap 3: Nginx Deployment Prep
 
 ## Tujuan Tahap 3
 
-Tahap ini menyiapkan konfigurasi production untuk CloudBox tanpa benar-benar deploy ke VPS dan tanpa menjalankan Certbot. Fokusnya adalah Nginx reverse proxy, systemd backend service, firewall draft, dan dokumentasi deployment.
+Tahap ini menyiapkan konfigurasi production untuk KloudBox tanpa benar-benar deploy ke VPS dan tanpa menjalankan Certbot. Fokusnya adalah Nginx reverse proxy, systemd backend service, firewall draft, dan dokumentasi deployment.
 
 ## Nginx Reverse Proxy
 
@@ -15,8 +15,8 @@ deploy/nginx-cloudbox.conf
 Nginx akan menerima traffic HTTP port 80 untuk domain placeholder:
 
 ```txt
-cloudbox.online
-www.cloudbox.online
+kloudbox.my.id
+www.kloudbox.my.id
 ```
 
 Frontend React build disajikan dari:
@@ -42,7 +42,7 @@ http://127.0.0.1:5000/api/
 Contoh production check:
 
 ```bash
-curl http://cloudbox.online/api/health
+curl http://kloudbox.my.id/api/health
 ```
 
 Header proxy standar yang dipakai:
@@ -69,13 +69,13 @@ http://127.0.0.1:8081/
 Dengan ini static website user bisa diakses lewat:
 
 ```txt
-http://cloudbox.online/sites/riansyah/
+http://kloudbox.my.id/sites/riansyah/
 ```
 
 Pada tahap HTTPS nanti URL akan menjadi:
 
 ```txt
-https://cloudbox.online/sites/riansyah/
+https://kloudbox.my.id/sites/riansyah/
 ```
 
 ## React Router Fallback
@@ -143,7 +143,7 @@ curl http://localhost/api/health
 Melalui domain:
 
 ```bash
-curl http://cloudbox.online/api/health
+curl http://kloudbox.my.id/api/health
 ```
 
 ## Screenshot Checklist Tahap 3
@@ -153,7 +153,7 @@ curl http://cloudbox.online/api/health
 - [ ] File `deploy/firewall.md`.
 - [ ] File `deploy/deployment-production.md`.
 - [ ] File `deploy/env-production-example.md`.
-- [ ] `nginx-cloudbox.conf` berisi server_name `cloudbox.online www.cloudbox.online`.
+- [ ] `nginx-cloudbox.conf` berisi server_name `kloudbox.my.id www.kloudbox.my.id`.
 - [ ] Nginx config berisi root `/var/www/cloudbox/frontend/dist`.
 - [ ] Nginx config berisi proxy `/api/` ke `127.0.0.1:5000`.
 - [ ] Nginx config berisi proxy `/sites/riansyah/` ke `127.0.0.1:8081`.

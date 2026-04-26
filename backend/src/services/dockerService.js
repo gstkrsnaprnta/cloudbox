@@ -133,7 +133,7 @@ export async function provisionCloudBoxAfterPayment(orderInput) {
   });
 
   if (!order) {
-    throw new Error("Order tidak ditemukan untuk provisioning CloudBox.");
+    throw new Error("Order tidak ditemukan untuk provisioning KloudBox.");
   }
 
   if (order.cloudBox) {

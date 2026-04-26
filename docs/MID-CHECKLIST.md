@@ -1,11 +1,11 @@
-# CloudBox MID/UTS Checklist
+# KloudBox MID/UTS Checklist
 
 Gunakan checklist ini sebagai daftar bukti screenshot untuk laporan MID/UTS. Sensor secret key, callback token, JWT, dan data sensitif lain sebelum dimasukkan ke laporan.
 
 ## Screenshot Aplikasi
 
-- [ ] Landing page CloudBox tampil di `http://127.0.0.1:5173`.
-- [ ] Navbar CloudBox tampil.
+- [ ] Landing page KloudBox tampil di `http://127.0.0.1:5173`.
+- [ ] Navbar KloudBox tampil.
 - [ ] Pricing page menampilkan paket `Student Box`.
 - [ ] Form register user tampil.
 - [ ] Register user berhasil.

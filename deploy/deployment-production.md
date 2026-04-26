@@ -1,11 +1,11 @@
-# CloudBox Production Deployment Draft
+# KloudBox Production Deployment Draft
 
 Panduan ini menyiapkan deployment ke Tencent VPS. Tahap ini belum menjalankan Certbot/HTTPS sungguhan dan belum melakukan deployment langsung.
 
 ## 1. SSH ke VPS
 
 ```bash
-ssh root@IP_VPS_TENCENT
+ssh ubuntu@43.133.144.235
 ```
 
 ## 2. Update Server
@@ -169,23 +169,23 @@ sudo ufw status
 curl http://127.0.0.1:5000/api/health
 curl http://localhost/api/health
 docker ps
-ssh student@cloudbox.online -p 2201
+ssh student@kloudbox.my.id -p 2201
 ```
 
 Buka di browser:
 
 ```txt
-http://cloudbox.online/
-http://cloudbox.online/api/health
-http://cloudbox.online/sites/riansyah/
+http://kloudbox.my.id/
+http://kloudbox.my.id/api/health
+http://kloudbox.my.id/sites/riansyah/
 ```
 
 Setelah Certbot pada tahap berikutnya:
 
 ```txt
-https://cloudbox.online/
-https://cloudbox.online/api/health
-https://cloudbox.online/sites/riansyah/
+https://kloudbox.my.id/
+https://kloudbox.my.id/api/health
+https://kloudbox.my.id/sites/riansyah/
 ```
 
 ## Important Scope Note

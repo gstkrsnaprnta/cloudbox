@@ -1,4 +1,4 @@
-# CloudBox MID/UTS Testing Guide
+# KloudBox MID/UTS Testing Guide
 
 Panduan ini fokus untuk kebutuhan MID/UTS: Xendit REST API, environment `.env`, dashboard order, webhook, dan CLI check invoice.
 
@@ -122,7 +122,7 @@ Invoice URL: https://checkout.xendit.co/web/...
 
 ## 11. Screenshot untuk Laporan MID/UTS
 
-- Landing page CloudBox.
+- Landing page KloudBox.
 - Pricing page dengan Student Box.
 - Register/login berhasil.
 - Dashboard order.

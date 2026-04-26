@@ -1,6 +1,6 @@
-# CloudBox UAS Backend Provisioning
+# KloudBox UAS Backend Provisioning
 
-Panduan ini untuk UAS tahap 2: integrasi Docker container ke backend dan dashboard CloudBox. Jangan lanjut ke Nginx production, domain, Certbot, systemd, atau deployment VPS pada tahap ini.
+Panduan ini untuk UAS tahap 2: integrasi Docker container ke backend dan dashboard KloudBox. Jangan lanjut ke Nginx production, domain, Certbot, systemd, atau deployment VPS pada tahap ini.
 
 ## 1. Pastikan Docker Berjalan
 
@@ -182,7 +182,7 @@ cat > /tmp/cloudbox-demo-site/index.html <<'EOF'
 <!doctype html>
 <html>
   <body>
-    <h1>Hello from CloudBox Dashboard Provisioning</h1>
+    <h1>Hello from KloudBox Dashboard Provisioning</h1>
     <p>Uploaded with SCP after backend provisioning.</p>
   </body>
 </html>

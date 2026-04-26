@@ -58,7 +58,7 @@ router.post("/", async (req, res, next) => {
         externalId,
         amount: selectedPackage.price,
         payerEmail: req.user.email,
-        description: `CloudBox ${selectedPackage.name}`
+        description: `KloudBox ${selectedPackage.name}`
       });
     } catch (error) {
       const failedOrder = await prisma.order.update({

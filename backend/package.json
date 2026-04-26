@@ -1,7 +1,7 @@
 {
   "name": "cloudbox-backend",
   "version": "1.0.0",
-  "description": "CloudBox MID/UTS backend with Express, Prisma, JWT, and Xendit invoices.",
+  "description": "KloudBox MID/UTS backend with Express, Prisma, JWT, and Xendit invoices.",
   "main": "src/server.js",
   "type": "module",
   "scripts": {

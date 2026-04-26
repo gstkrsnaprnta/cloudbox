@@ -46,7 +46,7 @@ export function Dashboard() {
     try {
       await api(`/orders/${orderId}/mark-paid`, { method: "POST" });
       await loadDashboard();
-      setMessage("Order ditandai PAID dan provisioning CloudBox dijalankan.");
+      setMessage("Order ditandai PAID dan provisioning KloudBox dijalankan.");
     } catch (error) {
       setMessage(error.message);
     } finally {
@@ -67,8 +67,8 @@ export function Dashboard() {
       <div className="dashboard-head">
         <div>
           <p className="eyebrow">Dashboard</p>
-          <h1>Halo, {user?.name || "CloudBox User"}</h1>
-          <p>Pantau order, invoice, dan kontrol container CloudBox kamu.</p>
+          <h1>Halo, {user?.name || "KloudBox User"}</h1>
+          <p>Pantau order, invoice, dan kontrol container KloudBox kamu.</p>
         </div>
         <div className="dashboard-actions">
           <button className="secondary-button" onClick={loadDashboard}>
@@ -132,13 +132,13 @@ export function Dashboard() {
 
       <section className="box-panel">
         <div className="section-heading">
-          <p className="eyebrow">CloudBox Container</p>
+          <p className="eyebrow">KloudBox Container</p>
           <h2>SSH dan Static Website</h2>
         </div>
 
         {!box ? (
           <div className="empty-state standalone">
-            <p>Belum ada CloudBox aktif. Buat order lalu tandai paid di development atau tunggu webhook Xendit.</p>
+            <p>Belum ada KloudBox aktif. Buat order lalu tandai paid di development atau tunggu webhook Xendit.</p>
           </div>
         ) : (
           <>

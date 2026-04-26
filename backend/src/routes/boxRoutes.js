@@ -18,7 +18,7 @@ async function findUserBox(req, res) {
   const id = Number(req.params.id);
 
   if (!Number.isInteger(id)) {
-    res.status(422).json({ message: "Invalid CloudBox id." });
+    res.status(422).json({ message: "Invalid KloudBox id." });
     return null;
   }
 
@@ -27,7 +27,7 @@ async function findUserBox(req, res) {
   });
 
   if (!cloudBox) {
-    res.status(404).json({ message: "CloudBox not found." });
+    res.status(404).json({ message: "KloudBox not found." });
     return null;
   }
 

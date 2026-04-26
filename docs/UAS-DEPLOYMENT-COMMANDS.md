@@ -1,4 +1,4 @@
-# CloudBox UAS Deployment Commands
+# KloudBox UAS Deployment Commands
 
 Dokumen ini berisi command berurutan untuk push ke GitHub dan deployment production draft ke Tencent VPS. Jalankan command VPS hanya saat sudah masuk tahap deployment sungguhan.
 
@@ -35,7 +35,7 @@ Pastikan tidak ada:
 
 ```bash
 git add .
-git commit -m "Implement CloudBox MID and UAS deployment prep"
+git commit -m "Implement KloudBox MID and UAS deployment prep"
 ```
 
 ## 4. Tambahkan Remote GitHub
@@ -63,7 +63,7 @@ git push -u origin main
 ## 6. SSH ke VPS
 
 ```bash
-ssh root@IP_VPS_TENCENT
+ssh ubuntu@43.133.144.235
 ```
 
 ## 7. Install Dependencies Server
@@ -196,7 +196,7 @@ sudo ufw status
 ```bash
 curl http://127.0.0.1:5000/api/health
 curl http://localhost/api/health
-curl http://cloudbox.online/api/health
+curl http://kloudbox.my.id/api/health
 ```
 
 ## 21. Test Frontend
@@ -204,9 +204,9 @@ curl http://cloudbox.online/api/health
 Buka:
 
 ```txt
-http://cloudbox.online/
-http://cloudbox.online/pricing
-http://cloudbox.online/login
+http://kloudbox.my.id/
+http://kloudbox.my.id/pricing
+http://kloudbox.my.id/login
 ```
 
 ## 22. Test Docker Provisioning
@@ -235,7 +235,7 @@ cloudbox-user-1
 ## 23. Test SSH Container
 
 ```bash
-ssh student@cloudbox.online -p 2201
+ssh student@kloudbox.my.id -p 2201
 ```
 
 Password demo:
@@ -247,7 +247,7 @@ student123
 ## 24. Test Upload Static Website
 
 ```bash
-scp -P 2201 -r my-website/* student@cloudbox.online:/home/student/public_html/
+scp -P 2201 -r my-website/* student@kloudbox.my.id:/home/student/public_html/
 ```
 
 ## 25. Test Website Static
@@ -255,35 +255,35 @@ scp -P 2201 -r my-website/* student@cloudbox.online:/home/student/public_html/
 Buka:
 
 ```txt
-http://cloudbox.online/sites/riansyah/
+http://kloudbox.my.id/sites/riansyah/
 ```
 
 Setelah HTTPS tahap berikutnya:
 
 ```txt
-https://cloudbox.online/sites/riansyah/
+https://kloudbox.my.id/sites/riansyah/
 ```
 
 ## 26. Setup Certbot Setelah DNS Aktif
 
-Jalankan hanya setelah DNS `cloudbox.online` dan `www.cloudbox.online` resolve ke IP VPS.
+Jalankan hanya setelah DNS `kloudbox.my.id` dan `www.kloudbox.my.id` resolve ke IP VPS.
 
 ```bash
 sudo apt install certbot python3-certbot-nginx -y
-sudo certbot certonly --nginx -d cloudbox.online -d www.cloudbox.online --dry-run
-sudo certbot --nginx -d cloudbox.online -d www.cloudbox.online
+sudo certbot certonly --nginx -d kloudbox.my.id -d www.kloudbox.my.id --dry-run
+sudo certbot --nginx -d kloudbox.my.id -d www.kloudbox.my.id
 sudo certbot renew --dry-run
 ```
 
 ## 27. Final HTTPS Test
 
 ```bash
-curl https://cloudbox.online/api/health
+curl https://kloudbox.my.id/api/health
 ```
 
 Buka:
 
 ```txt
-https://cloudbox.online/
-https://cloudbox.online/sites/riansyah/
+https://kloudbox.my.id/
+https://kloudbox.my.id/sites/riansyah/
 ```

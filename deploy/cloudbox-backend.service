@@ -1,5 +1,5 @@
 [Unit]
-Description=CloudBox Backend Service
+Description=KloudBox Backend Service
 After=network.target docker.service
 Requires=docker.service
 

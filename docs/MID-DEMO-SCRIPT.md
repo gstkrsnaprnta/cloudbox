@@ -1,4 +1,4 @@
-# CloudBox MID/UTS Demo Script
+# KloudBox MID/UTS Demo Script
 
 Script ini menjelaskan urutan demo fase MID/UTS. Fokus demo adalah REST API Xendit, environment `.env`, dashboard order, webhook, dan CLI check invoice. Jangan lanjut ke Docker, SSH container, Nginx, domain, Certbot, atau deployment UAS pada demo ini.
 
@@ -42,7 +42,7 @@ Buka browser:
 http://127.0.0.1:5173
 ```
 
-Tunjukkan landing page CloudBox dan navbar.
+Tunjukkan landing page KloudBox dan navbar.
 
 ## 4. Register Akun
 

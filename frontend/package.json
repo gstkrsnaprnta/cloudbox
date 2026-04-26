@@ -1,7 +1,7 @@
 {
   "name": "cloudbox-frontend",
   "version": "1.0.0",
-  "description": "CloudBox MID/UTS React dashboard.",
+  "description": "KloudBox MID/UTS React dashboard.",
   "type": "module",
   "scripts": {
     "dev": "vite --host 127.0.0.1",

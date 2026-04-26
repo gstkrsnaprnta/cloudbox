@@ -11,7 +11,7 @@ export class AppErrorBoundary extends React.Component {
   }
 
   componentDidCatch(error, info) {
-    console.error("CloudBox UI crashed:", error, info);
+    console.error("KloudBox UI crashed:", error, info);
   }
 
   render() {
@@ -19,7 +19,7 @@ export class AppErrorBoundary extends React.Component {
       return (
         <main className="page-shell">
           <div className="error-panel">
-            <p className="eyebrow">CloudBox UI Error</p>
+            <p className="eyebrow">KloudBox UI Error</p>
             <h1>Halaman gagal dirender</h1>
             <p>{this.state.error.message || "Terjadi error runtime di frontend."}</p>
             <button className="button small" onClick={() => window.location.reload()}>

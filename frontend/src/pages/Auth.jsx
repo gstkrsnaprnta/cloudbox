@@ -38,7 +38,7 @@ export function AuthPage({ mode }) {
     <main className="auth-shell">
       <form className="auth-card" onSubmit={submit}>
         <p className="eyebrow">{isRegister ? "Register" : "Login"}</p>
-        <h1>{isRegister ? "Buat akun CloudBox" : "Masuk ke CloudBox"}</h1>
+        <h1>{isRegister ? "Buat akun KloudBox" : "Masuk ke KloudBox"}</h1>
         {isRegister ? (
           <label>
             Nama

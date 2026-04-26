@@ -1,4 +1,4 @@
-# CloudBox Static SSH Image
+# KloudBox Static SSH Image
 
 Ubuntu 22.04 image for UAS tahap 1. It runs SSH for the `student` user and serves `/home/student/public_html` through nginx on port 80.
 

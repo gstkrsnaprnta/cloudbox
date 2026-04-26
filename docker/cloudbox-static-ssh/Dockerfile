@@ -26,10 +26,10 @@ RUN cat > /home/student/public_html/index.html <<'EOF'
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>CloudBox</title>
+    <title>KloudBox</title>
   </head>
   <body>
-    <h1>Welcome to CloudBox</h1>
+    <h1>Welcome to KloudBox</h1>
     <p>Upload your static website to public_html.</p>
   </body>
 </html>

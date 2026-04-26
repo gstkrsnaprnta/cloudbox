@@ -1,22 +1,22 @@
-# CloudBox Production `.env` Example
+# KloudBox Production `.env` Example
 
 Contoh ini aman untuk dokumentasi karena secret disensor. Jangan commit `.env` asli.
 
 ```env
-APP_NAME=CloudBox
+APP_NAME=KloudBox
 APP_ENV=production
 APP_DEBUG=false
-APP_URL=https://cloudbox.online
-FRONTEND_URL=https://cloudbox.online
+APP_URL=https://kloudbox.my.id
+FRONTEND_URL=https://kloudbox.my.id
 PORT=5000
 DATABASE_URL=file:/var/www/cloudbox/backend/prisma/prod.db
 JWT_SECRET=********
 XENDIT_SECRET_KEY=********
 XENDIT_CALLBACK_TOKEN=********
-XENDIT_SUCCESS_REDIRECT_URL=https://cloudbox.online/dashboard?payment=success
-XENDIT_FAILURE_REDIRECT_URL=https://cloudbox.online/pricing?payment=failed
+XENDIT_SUCCESS_REDIRECT_URL=https://kloudbox.my.id/dashboard?payment=success
+XENDIT_FAILURE_REDIRECT_URL=https://kloudbox.my.id/pricing?payment=failed
 DOCKER_IMAGE=cloudbox-static-ssh
-SSH_HOST=cloudbox.online
+SSH_HOST=kloudbox.my.id
 SSH_PORT_START=2201
 WEB_PORT_START=8081
 DEFAULT_BOX_USERNAME=student

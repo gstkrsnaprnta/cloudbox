@@ -7,7 +7,7 @@ export function Landing() {
       <section className="hero">
         <div className="hero-copy">
           <p className="eyebrow">SaaS mini cloud hosting untuk praktikum</p>
-          <h1>CloudBox</h1>
+          <h1>KloudBox</h1>
           <p>
             Simulasi VPS mini untuk belajar alur order layanan cloud, pembayaran Xendit,
             dashboard status, dan environment development/production.
@@ -19,7 +19,7 @@ export function Landing() {
             <Link className="secondary-button" to="/login">Masuk Dashboard</Link>
           </div>
         </div>
-        <div className="terminal-panel" aria-label="CloudBox CLI preview">
+        <div className="terminal-panel" aria-label="KloudBox CLI preview">
           <div className="terminal-bar">
             <span></span><span></span><span></span>
           </div>

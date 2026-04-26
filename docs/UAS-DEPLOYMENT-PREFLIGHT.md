@@ -1,4 +1,4 @@
-# CloudBox UAS Tahap 4A: Deployment Preflight
+# KloudBox UAS Tahap 4A: Deployment Preflight
 
 Tahap ini memastikan repository dan dokumen deployment siap sebelum deploy sungguhan ke Tencent VPS. Jangan menjalankan command ke VPS, Certbot, DNS production, atau deployment real pada tahap ini.
 
@@ -67,8 +67,8 @@ Path penting:
 
 Domain masih placeholder sampai DNS sungguhan siap:
 
-- [ ] `cloudbox.online`
-- [ ] `www.cloudbox.online`
+- [ ] `kloudbox.my.id`
+- [ ] `www.kloudbox.my.id`
 
 Jangan mengganti domain placeholder di repo kecuali domain final sudah diputuskan.
 
@@ -90,8 +90,8 @@ Jangan mengganti domain placeholder di repo kecuali domain final sudah diputuska
 Contoh cek DNS:
 
 ```bash
-dig cloudbox.online
-dig www.cloudbox.online
+dig kloudbox.my.id
+dig www.kloudbox.my.id
 ```
 
 ## Environment Production Preflight
@@ -99,8 +99,8 @@ dig www.cloudbox.online
 - [ ] Backend `.env` production sudah disiapkan di server.
 - [ ] `APP_ENV=production`.
 - [ ] `APP_DEBUG=false`.
-- [ ] `APP_URL=https://cloudbox.online`.
-- [ ] `FRONTEND_URL=https://cloudbox.online`.
+- [ ] `APP_URL=https://kloudbox.my.id`.
+- [ ] `FRONTEND_URL=https://kloudbox.my.id`.
 - [ ] `DATABASE_URL=file:/var/www/cloudbox/backend/prisma/prod.db`.
 - [ ] `JWT_SECRET` diganti random string panjang.
 - [ ] `XENDIT_SECRET_KEY` valid sudah disiapkan.
