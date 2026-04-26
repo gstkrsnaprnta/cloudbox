@@ -6,6 +6,7 @@ import {
   Container,
   CreditCard,
   Globe2,
+  Rocket,
   Server,
   ShieldCheck,
   TerminalSquare,
@@ -13,8 +14,9 @@ import {
   UserPlus
 } from "lucide-react";
 import { Link } from "react-router-dom";
+import { getStoredUser } from "../lib/api";
 
-const badges = ["Powered by Docker Container", "Xendit Payment Integration", "HTTPS Ready"];
+const badges = ["Docker Container", "SSH Access", "Xendit Payment", "HTTPS Ready"];
 
 const features = [
   {
@@ -29,22 +31,22 @@ const features = [
   },
   {
     icon: CreditCard,
-    title: "Xendit Payment",
+    title: "Xendit Sandbox Payment",
     text: "Order layanan terhubung dengan invoice Xendit sandbox untuk simulasi pembayaran."
   },
   {
     icon: ShieldCheck,
-    title: "Safe Sandbox",
+    title: "Safe Cloud Sandbox",
     text: "Resource container dibatasi agar aman untuk praktikum dan demo cloud computing."
   }
 ];
 
 const steps = [
-  { icon: UserPlus, title: "Register akun" },
-  { icon: Server, title: "Pilih Student Box" },
-  { icon: CreditCard, title: "Bayar invoice Xendit" },
-  { icon: TerminalSquare, title: "SSH ke container" },
-  { icon: UploadCloud, title: "Upload website statis" }
+  { icon: UserPlus, title: "Register" },
+  { icon: Server, title: "Choose Student Box" },
+  { icon: CreditCard, title: "Pay with Xendit" },
+  { icon: TerminalSquare, title: "SSH to Container" },
+  { icon: UploadCloud, title: "Deploy Static Website" }
 ];
 
 const architecture = [
@@ -62,52 +64,87 @@ const benefits = [
 ];
 
 export function Landing() {
+  const user = getStoredUser();
+  const dashboardTarget = user ? "/dashboard" : "/login";
+
   return (
     <main className="landing-page">
+      <div className="landing-aurora" aria-hidden="true"></div>
+      <div className="landing-blob blob-one" aria-hidden="true"></div>
+      <div className="landing-blob blob-two" aria-hidden="true"></div>
+      <div className="landing-blob blob-three" aria-hidden="true"></div>
+
       <section className="landing-hero">
-        <div className="hero-copy">
-          <p className="eyebrow landing-eyebrow">SaaS cloud sandbox untuk belajar deployment</p>
-          <h1>Deploy Website Statis Lewat SSH Container</h1>
-          <p className="hero-subtitle">
+        <div className="hero-copy premium-hero-copy">
+          <p className="eyebrow landing-eyebrow hero-reveal reveal-1">SaaS cloud sandbox untuk static deployment</p>
+          <h1 className="hero-reveal reveal-2">Mini VPS Experience for Static Web Deployment</h1>
+          <p className="hero-subtitle hero-reveal reveal-3">
             KloudBox memberikan pengalaman seperti VPS mini melalui Docker container. Login via SSH,
-            upload file ke public_html, dan lihat websitemu online dalam hitungan menit.
+            upload file ke public_html, dan lihat websitemu online melalui domain HTTPS.
           </p>
 
-          <div className="badge-row" aria-label="KloudBox capabilities">
+          <div className="badge-row hero-reveal reveal-4" aria-label="KloudBox capabilities">
             {badges.map((badge) => (
-              <span className="glass-badge" key={badge}>
+              <span className="glass-badge premium-badge" key={badge}>
                 <CheckCircle2 size={15} />
                 {badge}
               </span>
             ))}
           </div>
 
-          <div className="hero-actions">
-            <Link className="button landing-primary" to="/register">
-              Mulai Sekarang <ArrowRight size={18} />
+          <div className="hero-actions hero-reveal reveal-5">
+            <Link className="button landing-primary" to="/pricing">
+              Mulai Sekarang <Rocket size={18} />
             </Link>
-            <Link className="secondary-button landing-secondary" to="/pricing">
-              Lihat Paket
+            <Link className="secondary-button landing-secondary" to={dashboardTarget}>
+              Lihat Dashboard <ArrowRight size={18} />
             </Link>
           </div>
         </div>
 
-        <div className="terminal-panel landing-terminal" aria-label="KloudBox SSH preview">
-          <div className="terminal-bar">
-            <span></span><span></span><span></span>
-            <strong>student@cloudbox-user-1</strong>
+        <div className="hero-visual hero-reveal reveal-6">
+          <div className="terminal-panel landing-terminal premium-terminal" aria-label="KloudBox SSH preview">
+            <div className="terminal-bar">
+              <span></span><span></span><span></span>
+              <strong>kloudbox terminal</strong>
+            </div>
+            <div className="terminal-lines" aria-hidden="true">
+              <p className="terminal-line line-1"><span>$ ssh student@kloudbox.my.id -p 2201</span></p>
+              <p className="terminal-line line-2"><span>$ cd public_html</span></p>
+              <p className="terminal-line line-3"><span>$ ls</span></p>
+              <p className="terminal-output line-4">index.html&nbsp;&nbsp;style.css&nbsp;&nbsp;script.js</p>
+              <p className="terminal-line line-5"><span>$ echo &quot;Hello KloudBox&quot;</span><i></i></p>
+            </div>
           </div>
-          <pre>{`student@cloudbox-user-1:~$ cd public_html
-student@cloudbox-user-1:~/public_html$ ls
-index.html style.css script.js
-student@cloudbox-user-1:~/public_html$ echo "Hello KloudBox"`}</pre>
+
+          <aside className="status-card glass-card">
+            <div>
+              <span>Status</span>
+              <strong><i></i>Running</strong>
+            </div>
+            <div>
+              <span>SSH</span>
+              <strong>2201</strong>
+            </div>
+            <div>
+              <span>Web</span>
+              <strong>HTTPS</strong>
+            </div>
+            <div>
+              <span>RAM</span>
+              <strong>128MB</strong>
+            </div>
+          </aside>
         </div>
       </section>
 
-      <section className="landing-section">
+      <section className="landing-section reveal-section">
         <div className="section-kicker">
-          <p className="eyebrow landing-eyebrow">Fitur utama</p>
-          <h2>Container hosting yang terasa seperti VPS mini</h2>
+          <p className="eyebrow landing-eyebrow">Cloud features</p>
+          <h2>Semua yang dibutuhkan untuk belajar deploy dari terminal</h2>
+          <p className="hero-subtitle">
+            Simulasi cloud hosting lengkap dengan payment flow, container Linux, SSH, dan static website routing.
+          </p>
         </div>
         <div className="landing-card-grid">
           {features.map(({ icon: Icon, title, text }) => (
@@ -120,7 +157,7 @@ student@cloudbox-user-1:~/public_html$ echo "Hello KloudBox"`}</pre>
         </div>
       </section>
 
-      <section className="landing-section">
+      <section className="landing-section reveal-section">
         <div className="section-kicker">
           <p className="eyebrow landing-eyebrow">Cara kerja</p>
           <h2>Dari akun baru sampai website online</h2>
@@ -136,7 +173,7 @@ student@cloudbox-user-1:~/public_html$ echo "Hello KloudBox"`}</pre>
         </div>
       </section>
 
-      <section className="landing-section architecture-section">
+      <section className="landing-section architecture-section reveal-section">
         <div className="section-kicker">
           <p className="eyebrow landing-eyebrow">Mini architecture</p>
           <h2>Alur KloudBox dari dashboard ke container</h2>
@@ -148,13 +185,13 @@ student@cloudbox-user-1:~/public_html$ echo "Hello KloudBox"`}</pre>
                 <Icon size={24} />
                 <span>{label}</span>
               </div>
-              {index < architecture.length - 1 ? <span className="flow-arrow">↓</span> : null}
+              {index < architecture.length - 1 ? <span className="flow-arrow" aria-hidden="true"></span> : null}
             </div>
           ))}
         </div>
       </section>
 
-      <section className="landing-section landing-split">
+      <section className="landing-section landing-split reveal-section">
         <div className="benefit-copy">
           <p className="eyebrow landing-eyebrow">Benefit</p>
           <h2>Belajar deployment cloud tanpa membuka akses ke VPS utama</h2>
@@ -176,7 +213,7 @@ student@cloudbox-user-1:~/public_html$ echo "Hello KloudBox"`}</pre>
             <li>0.2 CPU</li>
             <li>SSH Access</li>
             <li>1 Static Website</li>
-            <li>Folder public_html</li>
+            <li>public_html folder</li>
           </ul>
           <Link className="button landing-primary full" to="/pricing">
             Beli Student Box
@@ -187,13 +224,13 @@ student@cloudbox-user-1:~/public_html$ echo "Hello KloudBox"`}</pre>
       <section className="final-cta">
         <div>
           <p className="eyebrow landing-eyebrow">Mulai deploy</p>
-          <h2>Siap merasakan pengalaman VPS mini?</h2>
+          <h2>Siap deploy website statis dari terminal?</h2>
           <p>
-            Gunakan KloudBox untuk belajar SSH, Docker container, dan deployment website statis secara aman.
+            Belajar SSH, Docker container, dan deployment web statis dalam satu platform cloud mini.
           </p>
         </div>
-        <Link className="button landing-primary" to="/register">
-          Mulai Deploy Sekarang <ArrowRight size={18} />
+        <Link className="button landing-primary" to="/pricing">
+          Coba KloudBox Sekarang <ArrowRight size={18} />
         </Link>
       </section>
     </main>

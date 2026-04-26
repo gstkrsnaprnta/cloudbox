@@ -1,4 +1,4 @@
-import { Box, LogOut } from "lucide-react";
+import { Cloud, LogOut } from "lucide-react";
 import { Link, NavLink, useLocation, useNavigate } from "react-router-dom";
 import { clearSession, getStoredUser } from "../lib/api";
 
@@ -16,7 +16,7 @@ export function Nav() {
   return (
     <header className={`topbar${isLanding ? " landing-nav" : ""}`}>
       <Link className="brand" to="/">
-        <Box size={24} />
+        <Cloud size={24} />
         <span>KloudBox</span>
       </Link>
       <nav className="navlinks">
