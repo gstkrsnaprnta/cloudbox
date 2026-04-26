@@ -1,10 +1,12 @@
 import { Box, LogOut } from "lucide-react";
-import { Link, NavLink, useNavigate } from "react-router-dom";
+import { Link, NavLink, useLocation, useNavigate } from "react-router-dom";
 import { clearSession, getStoredUser } from "../lib/api";
 
 export function Nav() {
   const navigate = useNavigate();
+  const location = useLocation();
   const user = getStoredUser();
+  const isLanding = location.pathname === "/";
 
   function logout() {
     clearSession();
@@ -12,7 +14,7 @@ export function Nav() {
   }
 
   return (
-    <header className="topbar">
+    <header className={`topbar${isLanding ? " landing-nav" : ""}`}>
       <Link className="brand" to="/">
         <Box size={24} />
         <span>KloudBox</span>

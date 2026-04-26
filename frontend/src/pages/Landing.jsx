@@ -1,53 +1,200 @@
-import { ArrowRight, CheckCircle2, Server, TerminalSquare } from "lucide-react";
+import {
+  ArrowRight,
+  CheckCircle2,
+  Cloud,
+  Code2,
+  Container,
+  CreditCard,
+  Globe2,
+  Server,
+  ShieldCheck,
+  TerminalSquare,
+  UploadCloud,
+  UserPlus
+} from "lucide-react";
 import { Link } from "react-router-dom";
+
+const badges = ["Powered by Docker Container", "Xendit Payment Integration", "HTTPS Ready"];
+
+const features = [
+  {
+    icon: TerminalSquare,
+    title: "SSH Container",
+    text: "User mendapatkan akses SSH ke container Linux pribadi, bukan VPS utama."
+  },
+  {
+    icon: Globe2,
+    title: "Static Web Deploy",
+    text: "Upload HTML, CSS, dan JavaScript ke public_html lalu akses melalui domain."
+  },
+  {
+    icon: CreditCard,
+    title: "Xendit Payment",
+    text: "Order layanan terhubung dengan invoice Xendit sandbox untuk simulasi pembayaran."
+  },
+  {
+    icon: ShieldCheck,
+    title: "Safe Sandbox",
+    text: "Resource container dibatasi agar aman untuk praktikum dan demo cloud computing."
+  }
+];
+
+const steps = [
+  { icon: UserPlus, title: "Register akun" },
+  { icon: Server, title: "Pilih Student Box" },
+  { icon: CreditCard, title: "Bayar invoice Xendit" },
+  { icon: TerminalSquare, title: "SSH ke container" },
+  { icon: UploadCloud, title: "Upload website statis" }
+];
+
+const architecture = [
+  { icon: Code2, label: "User Browser / Terminal" },
+  { icon: Cloud, label: "KloudBox Dashboard" },
+  { icon: CreditCard, label: "Xendit Invoice" },
+  { icon: Container, label: "Docker Container" },
+  { icon: Globe2, label: "Static Website Online" }
+];
+
+const benefits = [
+  "Belajar alur cloud hosting dari order sampai website online.",
+  "SSH, SCP, Docker, Nginx, dan payment gateway dalam satu simulasi.",
+  "Cocok untuk praktikum cloud computing tanpa memberi akses ke VPS utama."
+];
 
 export function Landing() {
   return (
-    <main>
-      <section className="hero">
+    <main className="landing-page">
+      <section className="landing-hero">
         <div className="hero-copy">
-          <p className="eyebrow">SaaS mini cloud hosting untuk praktikum</p>
-          <h1>KloudBox</h1>
-          <p>
-            Simulasi VPS mini untuk belajar alur order layanan cloud, pembayaran Xendit,
-            dashboard status, dan environment development/production.
+          <p className="eyebrow landing-eyebrow">SaaS cloud sandbox untuk belajar deployment</p>
+          <h1>Deploy Website Statis Lewat SSH Container</h1>
+          <p className="hero-subtitle">
+            KloudBox memberikan pengalaman seperti VPS mini melalui Docker container. Login via SSH,
+            upload file ke public_html, dan lihat websitemu online dalam hitungan menit.
           </p>
+
+          <div className="badge-row" aria-label="KloudBox capabilities">
+            {badges.map((badge) => (
+              <span className="glass-badge" key={badge}>
+                <CheckCircle2 size={15} />
+                {badge}
+              </span>
+            ))}
+          </div>
+
           <div className="hero-actions">
-            <Link className="button" to="/pricing">
+            <Link className="button landing-primary" to="/register">
               Mulai Sekarang <ArrowRight size={18} />
             </Link>
-            <Link className="secondary-button" to="/login">Masuk Dashboard</Link>
+            <Link className="secondary-button landing-secondary" to="/pricing">
+              Lihat Paket
+            </Link>
           </div>
         </div>
-        <div className="terminal-panel" aria-label="KloudBox CLI preview">
+
+        <div className="terminal-panel landing-terminal" aria-label="KloudBox SSH preview">
           <div className="terminal-bar">
             <span></span><span></span><span></span>
+            <strong>student@cloudbox-user-1</strong>
           </div>
-          <pre>{`$ cloudbox order student-box
-Invoice created: PENDING
-
-$ node scripts/check-xendit-invoice.js inv_xxx
-Status: PAID
-Provisioning: STUB_COMPLETED`}</pre>
+          <pre>{`student@cloudbox-user-1:~$ cd public_html
+student@cloudbox-user-1:~/public_html$ ls
+index.html style.css script.js
+student@cloudbox-user-1:~/public_html$ echo "Hello KloudBox"`}</pre>
         </div>
       </section>
 
-      <section className="feature-band">
-        <article>
-          <Server />
-          <h2>Mini VPS Concept</h2>
-          <p>Provisioning container disiapkan sebagai stub untuk fase MID dan dilanjutkan saat UAS.</p>
+      <section className="landing-section">
+        <div className="section-kicker">
+          <p className="eyebrow landing-eyebrow">Fitur utama</p>
+          <h2>Container hosting yang terasa seperti VPS mini</h2>
+        </div>
+        <div className="landing-card-grid">
+          {features.map(({ icon: Icon, title, text }) => (
+            <article className="glass-card feature-card" key={title}>
+              <span className="card-icon"><Icon size={24} /></span>
+              <h3>{title}</h3>
+              <p>{text}</p>
+            </article>
+          ))}
+        </div>
+      </section>
+
+      <section className="landing-section">
+        <div className="section-kicker">
+          <p className="eyebrow landing-eyebrow">Cara kerja</p>
+          <h2>Dari akun baru sampai website online</h2>
+        </div>
+        <div className="step-grid">
+          {steps.map(({ icon: Icon, title }, index) => (
+            <article className="glass-card step-card" key={title}>
+              <span className="step-number">{index + 1}</span>
+              <Icon size={22} />
+              <h3>{title}</h3>
+            </article>
+          ))}
+        </div>
+      </section>
+
+      <section className="landing-section architecture-section">
+        <div className="section-kicker">
+          <p className="eyebrow landing-eyebrow">Mini architecture</p>
+          <h2>Alur KloudBox dari dashboard ke container</h2>
+        </div>
+        <div className="architecture-flow">
+          {architecture.map(({ icon: Icon, label }, index) => (
+            <div className="architecture-node" key={label}>
+              <div className="glass-card architecture-card">
+                <Icon size={24} />
+                <span>{label}</span>
+              </div>
+              {index < architecture.length - 1 ? <span className="flow-arrow">↓</span> : null}
+            </div>
+          ))}
+        </div>
+      </section>
+
+      <section className="landing-section landing-split">
+        <div className="benefit-copy">
+          <p className="eyebrow landing-eyebrow">Benefit</p>
+          <h2>Belajar deployment cloud tanpa membuka akses ke VPS utama</h2>
+          <div className="benefit-list">
+            {benefits.map((benefit) => (
+              <p key={benefit}>
+                <CheckCircle2 size={18} />
+                <span>{benefit}</span>
+              </p>
+            ))}
+          </div>
+        </div>
+
+        <article className="glass-card pricing-preview">
+          <p className="eyebrow landing-eyebrow">Student Box</p>
+          <h3>Rp5.000</h3>
+          <ul>
+            <li>128MB RAM</li>
+            <li>0.2 CPU</li>
+            <li>SSH Access</li>
+            <li>1 Static Website</li>
+            <li>Folder public_html</li>
+          </ul>
+          <Link className="button landing-primary full" to="/pricing">
+            Beli Student Box
+          </Link>
         </article>
-        <article>
-          <CheckCircle2 />
-          <h2>Xendit Invoice</h2>
-          <p>Order Student Box memanggil REST API Xendit dan menyimpan invoice URL ke database.</p>
-        </article>
-        <article>
-          <TerminalSquare />
-          <h2>CLI Evidence</h2>
-          <p>Script backend mengambil status invoice langsung dari Xendit API untuk bukti integrasi.</p>
-        </article>
+      </section>
+
+      <section className="final-cta">
+        <div>
+          <p className="eyebrow landing-eyebrow">Mulai deploy</p>
+          <h2>Siap merasakan pengalaman VPS mini?</h2>
+          <p>
+            Gunakan KloudBox untuk belajar SSH, Docker container, dan deployment website statis secara aman.
+          </p>
+        </div>
+        <Link className="button landing-primary" to="/register">
+          Mulai Deploy Sekarang <ArrowRight size={18} />
+        </Link>
       </section>
     </main>
   );
