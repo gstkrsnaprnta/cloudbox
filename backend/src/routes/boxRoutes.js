@@ -4,6 +4,7 @@ import { requireAuth } from "../middleware/auth.js";
 import {
   formatCloudBox,
   getContainerStatus,
+  getPublicUrl,
   resetContainer,
   restartContainer,
   startContainer,
@@ -37,7 +38,10 @@ async function findUserBox(req, res) {
 async function updateBoxStatus(cloudBox, status) {
   const updatedBox = await prisma.cloudBox.update({
     where: { id: cloudBox.id },
-    data: { status }
+    data: {
+      status,
+      ...(status === "RUNNING" ? { publicUrl: getPublicUrl(cloudBox.webPort) } : {})
+    }
   });
   return formatCloudBox(updatedBox);
 }
@@ -58,6 +62,13 @@ router.get("/me", async (req, res, next) => {
       where: { id: cloudBox.id },
       data: { status }
     });
+
+    if (status === "ERROR") {
+      return res.json({
+        box: formatCloudBox(updatedBox),
+        message: "Container not found on Docker host"
+      });
+    }
 
     res.json({ box: formatCloudBox(updatedBox) });
   } catch (error) {
@@ -110,6 +121,11 @@ router.post("/:id/reset", async (req, res, next) => {
   try {
     const cloudBox = await findUserBox(req, res);
     if (!cloudBox) return;
+
+    await prisma.cloudBox.update({
+      where: { id: cloudBox.id },
+      data: { status: "CREATING" }
+    });
 
     const status = await resetContainer(cloudBox);
     res.json({ box: await updateBoxStatus(cloudBox, status) });

@@ -14,23 +14,26 @@ function addDays(date, days) {
 
 function mapDockerError(error) {
   const message = `${error.stderr || error.stdout || error.message || ""}`.trim();
+  const normalizedMessage = message.toLowerCase();
 
-  if (message.includes("Cannot connect to the Docker daemon")) {
+  if (normalizedMessage.includes("cannot connect to the docker daemon")) {
     return new Error("Docker belum berjalan. Buka Docker Desktop atau start Docker daemon terlebih dahulu.");
   }
 
-  if (message.includes("Unable to find image") || message.includes("No such image")) {
+  if (normalizedMessage.includes("unable to find image") || normalizedMessage.includes("no such image")) {
     return new Error(`Docker image ${env.dockerImage} belum ada. Build dulu: docker build -t ${env.dockerImage} docker/cloudbox-static-ssh`);
   }
 
-  if (message.includes("port is already allocated") || message.includes("Bind for 0.0.0.0")) {
+  if (normalizedMessage.includes("port is already allocated") || normalizedMessage.includes("bind for 0.0.0.0")) {
     return new Error(
       `Port ${env.cloudBoxSshPort} atau ${env.cloudBoxWebPort} sedang dipakai. Hapus container lama atau ganti port.`
     );
   }
 
-  if (message.includes("No such container") || message.includes("No such object")) {
-    return new Error("Container tidak ditemukan.");
+  if (normalizedMessage.includes("no such container") || normalizedMessage.includes("no such object")) {
+    const notFoundError = new Error("Container tidak ditemukan.");
+    notFoundError.code = "CONTAINER_NOT_FOUND";
+    return notFoundError;
   }
 
   return new Error(message || "Docker command gagal.");
@@ -43,6 +46,20 @@ async function runDocker(args) {
   } catch (error) {
     throw mapDockerError(error);
   }
+}
+
+function isMissingContainerError(error) {
+  return error.code === "CONTAINER_NOT_FOUND" || error.message === "Container tidak ditemukan.";
+}
+
+function getPublicUrl(webPort) {
+  const appUrl = env.appUrl.replace(/\/$/, "");
+
+  if (appUrl.includes("localhost") || appUrl.includes("127.0.0.1")) {
+    return `http://localhost:${webPort}`;
+  }
+
+  return `${appUrl}/sites/riansyah/`;
 }
 
 export function formatCloudBox(cloudBox) {
@@ -77,7 +94,7 @@ export async function getContainerStatus(containerName) {
     }
     return output.toUpperCase();
   } catch (error) {
-    if (error.message === "Container tidak ditemukan.") {
+    if (isMissingContainerError(error)) {
       return "ERROR";
     }
     throw error;
@@ -89,7 +106,7 @@ async function containerExists(containerName) {
     await runDocker(["inspect", containerName]);
     return true;
   } catch (error) {
-    if (error.message === "Container tidak ditemukan.") {
+    if (isMissingContainerError(error)) {
       return false;
     }
     throw error;
@@ -126,6 +143,27 @@ async function refreshCloudBoxStatus(cloudBox) {
   });
 }
 
+async function ensureContainerRunning(cloudBox) {
+  if (await containerExists(cloudBox.containerName)) {
+    await startContainer(cloudBox.containerName);
+  } else {
+    await runCloudBoxContainer({
+      containerName: cloudBox.containerName,
+      hostname: cloudBox.hostname,
+      sshPort: cloudBox.sshPort,
+      webPort: cloudBox.webPort
+    });
+  }
+
+  return prisma.cloudBox.update({
+    where: { id: cloudBox.id },
+    data: {
+      status: "RUNNING",
+      publicUrl: getPublicUrl(cloudBox.webPort)
+    }
+  });
+}
+
 export async function provisionCloudBoxAfterPayment(orderInput) {
   const order = await prisma.order.findUnique({
     where: { id: orderInput.id },
@@ -137,7 +175,15 @@ export async function provisionCloudBoxAfterPayment(orderInput) {
   }
 
   if (order.cloudBox) {
-    return refreshCloudBoxStatus(order.cloudBox);
+    try {
+      return await ensureContainerRunning(order.cloudBox);
+    } catch (error) {
+      await prisma.cloudBox.update({
+        where: { id: order.cloudBox.id },
+        data: { status: "ERROR" }
+      });
+      throw error;
+    }
   }
 
   const existingUserBox = await prisma.cloudBox.findFirst({
@@ -145,7 +191,27 @@ export async function provisionCloudBoxAfterPayment(orderInput) {
   });
 
   if (existingUserBox) {
-    return refreshCloudBoxStatus(existingUserBox);
+    const reassignedBox = await prisma.cloudBox.update({
+      where: { id: existingUserBox.id },
+      data: {
+        orderId: order.id,
+        sshHost: env.sshHost,
+        username: env.cloudBoxUsername,
+        password: env.cloudBoxPassword,
+        publicUrl: getPublicUrl(existingUserBox.webPort),
+        status: "CREATING"
+      }
+    });
+
+    try {
+      return await ensureContainerRunning(reassignedBox);
+    } catch (error) {
+      await prisma.cloudBox.update({
+        where: { id: reassignedBox.id },
+        data: { status: "ERROR" }
+      });
+      throw error;
+    }
   }
 
   const containerName = `cloudbox-user-${order.userId}`;
@@ -166,23 +232,14 @@ export async function provisionCloudBoxAfterPayment(orderInput) {
       webPort,
       username: env.cloudBoxUsername,
       password: env.cloudBoxPassword,
-      publicUrl: `http://localhost:${webPort}`,
+      publicUrl: getPublicUrl(webPort),
       status: "CREATING",
       expiresAt
     }
   });
 
   try {
-    if (await containerExists(containerName)) {
-      await startContainer(containerName);
-    } else {
-      await runCloudBoxContainer({ containerName, hostname, sshPort, webPort });
-    }
-
-    return prisma.cloudBox.update({
-      where: { id: cloudBox.id },
-      data: { status: "RUNNING" }
-    });
+    return await ensureContainerRunning(cloudBox);
   } catch (error) {
     await prisma.cloudBox.update({
       where: { id: cloudBox.id },
@@ -223,3 +280,5 @@ export async function resetContainer(cloudBox) {
   });
   return "RUNNING";
 }
+
+export { getPublicUrl };

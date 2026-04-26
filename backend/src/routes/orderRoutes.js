@@ -12,6 +12,13 @@ const createOrderSchema = z.object({
   packageId: z.number().int().positive()
 });
 
+function logProvisioningError(error) {
+  console.error("[cloudbox-provisioning] Failed to provision container.", {
+    message: error?.message,
+    name: error?.name
+  });
+}
+
 router.use(requireAuth);
 
 router.get("/", async (req, res, next) => {
@@ -124,7 +131,21 @@ router.post("/:id/mark-paid", async (req, res, next) => {
       }
     });
 
-    const cloudBox = await provisionCloudBoxAfterPayment(paidOrder);
+    let cloudBox;
+
+    try {
+      cloudBox = await provisionCloudBoxAfterPayment(paidOrder);
+    } catch (error) {
+      logProvisioningError(error);
+      await prisma.order.update({
+        where: { id: order.id },
+        data: { provisionStatus: "ERROR" }
+      });
+      return res.status(500).json({
+        message: "Failed to provision CloudBox container",
+        detail: error.message
+      });
+    }
 
     const updatedOrder = await prisma.order.update({
       where: { id: order.id },
