@@ -1,5 +1,4 @@
-const API_URL =
-  import.meta.env.VITE_API_URL || `${window.location.protocol}//${window.location.hostname}:5000/api`;
+const API_BASE_URL = import.meta.env.VITE_API_URL || "/api";
 
 export function getToken() {
   return localStorage.getItem("cloudbox_token");
@@ -34,7 +33,7 @@ export async function api(path, options = {}) {
   let response;
 
   try {
-    response = await fetch(`${API_URL}${path}`, {
+    response = await fetch(`${API_BASE_URL}${path}`, {
       ...options,
       headers: {
         "Content-Type": "application/json",
@@ -43,7 +42,7 @@ export async function api(path, options = {}) {
       }
     });
   } catch {
-    throw new Error("Tidak bisa terhubung ke KloudBox API. Pastikan backend berjalan di localhost:5000.");
+    throw new Error("Tidak bisa terhubung ke KloudBox API. Pastikan koneksi internet dan server KloudBox aktif.");
   }
 
   const data = await response.json().catch(() => ({}));
