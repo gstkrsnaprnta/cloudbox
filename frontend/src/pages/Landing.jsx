@@ -1,5 +1,6 @@
 import {
   ArrowRight,
+  Check,
   CheckCircle2,
   Cloud,
   Code2,
@@ -13,8 +14,9 @@ import {
   UploadCloud,
   UserPlus
 } from "lucide-react";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { getStoredUser } from "../lib/api";
+import { api, getStoredUser } from "../lib/api";
 
 const badges = ["Docker Container", "SSH Access", "Xendit Payment", "HTTPS Ready"];
 
@@ -63,9 +65,27 @@ const benefits = [
   "Cocok untuk praktikum cloud computing tanpa memberi akses ke VPS utama."
 ];
 
+const PACKAGE_FEATURES = {
+  "demo-box": ["100MB RAM, 0.1 CPU", "Aktif 1 hari", "SSH siap pakai"],
+  "student-box": ["128MB RAM, 0.2 CPU", "Aktif 7 hari", "SSH + folder web"],
+  "pro-box": ["256MB RAM, 0.25 CPU", "Aktif 30 hari", "SSH + folder web"]
+};
+
+function formatPrice(value) {
+  if (!value || value === 0) return "Gratis";
+  return `Rp${Number(value).toLocaleString("id-ID")}`;
+}
+
 export function Landing() {
   const user = getStoredUser();
   const dashboardTarget = user ? "/dashboard" : "/login";
+  const [packages, setPackages] = useState([]);
+
+  useEffect(() => {
+    api("/packages")
+      .then((data) => setPackages(data.packages || []))
+      .catch(() => setPackages([]));
+  }, []);
 
   return (
     <main className="landing-page">
@@ -191,6 +211,53 @@ export function Landing() {
         </div>
       </section>
 
+      <section className="landing-section landing-pricing-section reveal-section">
+        <div className="section-kicker">
+          <p className="eyebrow landing-eyebrow">Pricing</p>
+          <h2>Pilih paket KloudBox sesuai kebutuhan</h2>
+          <p className="hero-subtitle">
+            Mulai dari demo gratis hingga VPS mini siap pakai. Bayar sekali, aktif sesuai durasi.
+          </p>
+        </div>
+
+        <div className="landing-pricing-grid">
+          {packages.length === 0 ? (
+            <p className="hero-subtitle">Memuat paket…</p>
+          ) : (
+            packages.map((pkg) => {
+              const isFeatured = pkg.slug === "student-box";
+              const features = PACKAGE_FEATURES[pkg.slug] || [
+                `${pkg.ramLimit} RAM`,
+                pkg.cpuLimit,
+                `Aktif ${pkg.activeDays} hari`
+              ];
+              return (
+                <article
+                  className={`glass-card landing-pricing-card${isFeatured ? " landing-pricing-card-featured" : ""}`}
+                  key={pkg.id}
+                >
+                  {isFeatured ? <span className="landing-pricing-badge">Paling Populer</span> : null}
+                  <p className="eyebrow landing-eyebrow">{pkg.name}</p>
+                  <h3>{formatPrice(pkg.price)}</h3>
+                  <p className="landing-pricing-desc">{pkg.description}</p>
+                  <ul className="landing-pricing-features">
+                    {features.map((feature) => (
+                      <li key={feature}>
+                        <Check size={16} />
+                        <span>{feature}</span>
+                      </li>
+                    ))}
+                  </ul>
+                  <Link className="button landing-primary full" to="/pricing">
+                    {pkg.price === 0 ? "Coba Gratis" : "Beli Paket"}
+                  </Link>
+                </article>
+              );
+            })
+          )}
+        </div>
+      </section>
+
       <section className="landing-section landing-split reveal-section">
         <div className="benefit-copy">
           <p className="eyebrow landing-eyebrow">Benefit</p>
@@ -206,17 +273,17 @@ export function Landing() {
         </div>
 
         <article className="glass-card pricing-preview">
-          <p className="eyebrow landing-eyebrow">Student Box</p>
-          <h3>Rp5.000</h3>
+          <p className="eyebrow landing-eyebrow">Mulai sekarang</p>
+          <h3>Login &amp; Beli</h3>
           <ul>
-            <li>128MB RAM</li>
-            <li>0.2 CPU</li>
-            <li>SSH Access</li>
-            <li>1 Static Website</li>
-            <li>public_html folder</li>
+            <li>Login dengan akun KloudBox</li>
+            <li>Pilih paket di halaman Pricing</li>
+            <li>Bayar via Xendit sandbox</li>
+            <li>Container provisioned otomatis</li>
+            <li>SSH &amp; deploy website statis</li>
           </ul>
           <Link className="button landing-primary full" to="/pricing">
-            Beli Student Box
+            Lihat Semua Paket
           </Link>
         </article>
       </section>

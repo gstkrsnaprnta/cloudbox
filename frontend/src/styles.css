@@ -1681,3 +1681,99 @@ input {
   color: #16a34a;
   flex-shrink: 0;
 }
+
+
+/* =========================================================
+   Landing Pricing Section
+   ========================================================= */
+
+.landing-pricing-grid {
+  display: grid;
+  gap: 18px;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  margin-top: 18px;
+}
+
+.landing-pricing-card {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding: 26px 24px;
+  position: relative;
+  transition: transform 0.22s ease, border-color 0.22s ease, box-shadow 0.22s ease;
+}
+
+.landing-pricing-card:hover {
+  border-color: rgba(99, 102, 241, 0.55);
+  box-shadow: 0 28px 80px rgba(2, 6, 23, 0.42), 0 0 34px rgba(99, 102, 241, 0.18);
+  transform: translateY(-6px);
+}
+
+.landing-pricing-card-featured {
+  border: 2px solid #6366f1;
+  box-shadow: 0 18px 42px rgba(99, 102, 241, 0.28);
+  transform: translateY(-4px);
+}
+
+.landing-pricing-card-featured:hover {
+  transform: translateY(-10px);
+}
+
+.landing-pricing-badge {
+  background: linear-gradient(135deg, #6366f1, #06b6d4);
+  border-radius: 999px;
+  box-shadow: 0 8px 18px rgba(99, 102, 241, 0.4);
+  color: #ffffff;
+  font-size: 11px;
+  font-weight: 900;
+  left: 50%;
+  letter-spacing: 0.04em;
+  padding: 6px 14px;
+  position: absolute;
+  text-transform: uppercase;
+  top: -12px;
+  transform: translateX(-50%);
+  white-space: nowrap;
+  z-index: 2;
+}
+
+.landing-pricing-card h3 {
+  background: linear-gradient(135deg, #ffffff 8%, #67e8f9 70%, #c4b5fd 100%);
+  background-clip: text;
+  color: transparent;
+  font-size: 38px;
+  line-height: 1;
+  margin: 0;
+}
+
+.landing-pricing-desc {
+  color: #cbd5e1;
+  font-size: 14px;
+  margin: 0;
+}
+
+.landing-pricing-features {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.landing-pricing-features li {
+  align-items: center;
+  color: #e2e8f0;
+  display: flex;
+  font-size: 14px;
+  gap: 8px;
+}
+
+.landing-pricing-features li svg {
+  color: #22d3ee;
+  flex-shrink: 0;
+}
+
+.landing-pricing-card .button.full {
+  margin-top: auto;
+}
