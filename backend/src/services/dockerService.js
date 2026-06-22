@@ -1,4 +1,4 @@
-import { execFile } from "node:child_process";
+import { execFile, spawn } from "node:child_process";
 import { promisify } from "node:util";
 import { env } from "../config/env.js";
 import { prisma } from "../config/prisma.js";
@@ -113,6 +113,105 @@ async function containerExists(containerName) {
   }
 }
 
+async function runDockerWithStdin(args, input) {
+  return new Promise((resolve, reject) => {
+    const proc = spawn("docker", args, { timeout: 10000 });
+    let stderr = "";
+    proc.stderr.on("data", (chunk) => {
+      stderr += chunk.toString();
+    });
+    proc.on("error", reject);
+    proc.on("close", (code) => {
+      if (code === 0) {
+        resolve();
+      } else {
+        reject(new Error(stderr.trim() || `docker exit ${code}`));
+      }
+    });
+    proc.stdin.end(input);
+  });
+}
+
+function buildWelcomePage(cloudBox) {
+  const publicUrl = getPublicUrl(cloudBox.webPort);
+  const sshHost = cloudBox.sshHost || env.sshHost;
+  const sshPort = cloudBox.sshPort;
+  const username = cloudBox.username || env.cloudBoxUsername;
+  return `<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>KloudBox Container Ready</title>
+    <style>
+      *,*::before,*::after{box-sizing:border-box}
+      body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Inter,sans-serif;max-width:760px;margin:0 auto;padding:48px 24px;background:#f5f7fb;color:#102a43;line-height:1.6}
+      h1{color:#0f766e;font-size:32px;margin:8px 0 12px}
+      h3{margin:0 0 12px;font-size:16px;color:#102a43}
+      p{margin:8px 0;color:#34495e}
+      code{font-family:"SFMono-Regular",Consolas,monospace;background:#eef2f6;padding:2px 6px;border-radius:4px;font-size:13px}
+      pre{background:#17202a;color:#d9f99d;padding:16px;border-radius:8px;overflow-x:auto;margin:0;font-size:13px;line-height:1.5}
+      .badge{display:inline-flex;align-items:center;gap:6px;background:#ecfdf5;color:#047857;border:1px solid #6ee7b7;border-radius:999px;padding:4px 12px;font-size:12px;font-weight:700}
+      .dot{width:8px;height:8px;border-radius:50%;background:#10b981;display:inline-block;animation:pulse 1.5s ease-in-out infinite}
+      .card{background:#fff;border:1px solid #dde4ee;border-radius:12px;padding:20px;margin-top:18px;box-shadow:0 4px 12px rgba(15,35,55,.04)}
+      .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px;margin-top:16px}
+      .info{background:#f8fafc;border:1px solid #e5edf5;border-radius:8px;padding:12px}
+      .info span{display:block;font-size:11px;text-transform:uppercase;font-weight:800;color:#536273;margin-bottom:4px}
+      .info strong{font-family:"SFMono-Regular",Consolas,monospace;font-size:13px;word-break:break-all}
+      footer{margin-top:32px;color:#64748b;font-size:13px;text-align:center}
+      @keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+    </style>
+  </head>
+  <body>
+    <span class="badge"><span class="dot"></span>RUNNING</span>
+    <h1>KloudBox container kamu siap 🎉</h1>
+    <p>Container Linux ini di-provision otomatis setelah pembayaran berhasil. Kamu bisa login via SSH dan upload website statis (HTML/CSS/JS) ke folder <code>public_html</code>. Begitu kamu replace file ini dengan website kamu sendiri, halaman ini akan tergantikan.</p>
+
+    <div class="grid">
+      <div class="info"><span>Container</span><strong>${cloudBox.containerName}</strong></div>
+      <div class="info"><span>Status</span><strong>RUNNING</strong></div>
+      <div class="info"><span>SSH Host</span><strong>${sshHost}</strong></div>
+      <div class="info"><span>SSH Port</span><strong>${sshPort}</strong></div>
+      <div class="info"><span>Username</span><strong>${username}</strong></div>
+      <div class="info"><span>Folder Web</span><strong>${WEB_FOLDER}</strong></div>
+    </div>
+
+    <div class="card">
+      <h3>1) Upload via SCP (1 command, dari folder website lokal)</h3>
+      <pre>scp -P ${sshPort} -r my-website/* ${username}@${sshHost}:${WEB_FOLDER}/</pre>
+    </div>
+
+    <div class="card">
+      <h3>2) Atau SSH lalu edit langsung di container</h3>
+      <pre>ssh ${username}@${sshHost} -p ${sshPort}
+# masukkan password lalu:
+nano ${WEB_FOLDER}/index.html</pre>
+    </div>
+
+    <div class="card">
+      <h3>3) Cek website</h3>
+      <p>Buka <a href="${publicUrl}">${publicUrl}</a> di browser. Refresh setelah upload untuk melihat website kamu live.</p>
+    </div>
+
+    <footer>Powered by KloudBox · Docker Container · Nginx Reverse Proxy · Xendit Payment</footer>
+  </body>
+</html>
+`;
+}
+
+async function seedWelcomePage(cloudBox) {
+  try {
+    const html = buildWelcomePage(cloudBox);
+    await runDockerWithStdin(
+      ["exec", "-i", cloudBox.containerName, "sh", "-c", `cat > ${WEB_FOLDER}/index.html`],
+      html
+    );
+    await runDocker(["exec", cloudBox.containerName, "chown", "student:student", `${WEB_FOLDER}/index.html`]).catch(() => {});
+  } catch (error) {
+    console.warn("[cloudbox] seedWelcomePage failed (non-fatal):", error.message);
+  }
+}
+
 async function runCloudBoxContainer({ containerName, hostname, sshPort, webPort }) {
   await runDocker([
     "run",
@@ -143,7 +242,8 @@ async function refreshCloudBoxStatus(cloudBox) {
   });
 }
 
-async function ensureContainerRunning(cloudBox) {
+async function ensureContainerRunning(cloudBox, { seedWelcome = false } = {}) {
+  let createdNew = false;
   if (await containerExists(cloudBox.containerName)) {
     await startContainer(cloudBox.containerName);
   } else {
@@ -153,6 +253,13 @@ async function ensureContainerRunning(cloudBox) {
       sshPort: cloudBox.sshPort,
       webPort: cloudBox.webPort
     });
+    createdNew = true;
+  }
+
+  if (seedWelcome && createdNew) {
+    // Wait briefly for sshd/nginx to be up before seeding
+    await new Promise((r) => setTimeout(r, 1500));
+    await seedWelcomePage(cloudBox);
   }
 
   return prisma.cloudBox.update({
@@ -204,7 +311,7 @@ export async function provisionCloudBoxAfterPayment(orderInput) {
     });
 
     try {
-      return await ensureContainerRunning(reassignedBox);
+      return await ensureContainerRunning(reassignedBox, { seedWelcome: true });
     } catch (error) {
       await prisma.cloudBox.update({
         where: { id: reassignedBox.id },
@@ -239,7 +346,7 @@ export async function provisionCloudBoxAfterPayment(orderInput) {
   });
 
   try {
-    return await ensureContainerRunning(cloudBox);
+    return await ensureContainerRunning(cloudBox, { seedWelcome: true });
   } catch (error) {
     await prisma.cloudBox.update({
       where: { id: cloudBox.id },
