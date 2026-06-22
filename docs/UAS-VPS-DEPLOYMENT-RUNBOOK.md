@@ -451,7 +451,7 @@ http://kloudbox.my.id:8081
 Lewat Nginx path routing:
 
 ```txt
-http://kloudbox.my.id/sites/riansyah/
+http://kloudbox.my.id/sites/gustikrisnapranata/
 ```
 
 Expected: HTML yang baru diupload tampil.
@@ -618,7 +618,7 @@ Tahap 4B tidak bergantung domain. Gunakan IP:
 ```txt
 http://kloudbox.my.id/
 http://kloudbox.my.id/api/health
-http://kloudbox.my.id/sites/riansyah/
+http://kloudbox.my.id/sites/gustikrisnapranata/
 ```
 
 Certbot hanya dijalankan setelah DNS A record domain benar-benar resolve ke IP VPS.
@@ -640,7 +640,7 @@ Certbot hanya dijalankan setelah DNS A record domain benar-benar resolve ke IP V
 - [ ] `docker ps` menampilkan container user.
 - [ ] SSH ke container user sebagai `student`.
 - [ ] SCP upload website ke `/home/student/public_html`.
-- [ ] Website static tampil via `http://kloudbox.my.id/sites/riansyah/`.
+- [ ] Website static tampil via `http://kloudbox.my.id/sites/gustikrisnapranata/`.
 
 ## PASS Criteria Tahap 4B
 

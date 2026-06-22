@@ -59,7 +59,7 @@ function getPublicUrl(webPort) {
     return `http://localhost:${webPort}`;
   }
 
-  return `${appUrl}/sites/riansyah/`;
+  return `${appUrl}/sites/gustikrisnapranata/`;
 }
 
 export function formatCloudBox(cloudBox) {

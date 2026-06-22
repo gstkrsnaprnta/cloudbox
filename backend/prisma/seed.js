@@ -56,9 +56,9 @@ const users = [
     role: "user"
   },
   {
-    name: "Riansyah",
-    email: "riansyah@kloudbox.my.id",
-    password: "Riansyah123!",
+    name: "Gustikrisnapranata",
+    email: "gustikrisnapranata@kloudbox.my.id",
+    password: "Gusti123!",
     role: "user"
   }
 ];

@@ -52,12 +52,12 @@ Header proxy standar yang dipakai:
 - `X-Forwarded-For`
 - `X-Forwarded-Proto`
 
-## Routing `/sites/riansyah/` ke Container
+## Routing `/sites/gustikrisnapranata/` ke Container
 
 Route:
 
 ```txt
-/sites/riansyah/
+/sites/gustikrisnapranata/
 ```
 
 Diproxy ke container web port demo:
@@ -69,18 +69,18 @@ http://127.0.0.1:8081/
 Dengan ini static website user bisa diakses lewat:
 
 ```txt
-http://kloudbox.my.id/sites/riansyah/
+http://kloudbox.my.id/sites/gustikrisnapranata/
 ```
 
 Pada tahap HTTPS nanti URL akan menjadi:
 
 ```txt
-https://kloudbox.my.id/sites/riansyah/
+https://kloudbox.my.id/sites/gustikrisnapranata/
 ```
 
 ## React Router Fallback
 
-Frontend memakai React Router. Karena itu route selain `/api/` dan `/sites/riansyah/` memakai:
+Frontend memakai React Router. Karena itu route selain `/api/` dan `/sites/gustikrisnapranata/` memakai:
 
 ```nginx
 try_files $uri /index.html;
@@ -156,7 +156,7 @@ curl http://kloudbox.my.id/api/health
 - [ ] `nginx-cloudbox.conf` berisi server_name `kloudbox.my.id www.kloudbox.my.id`.
 - [ ] Nginx config berisi root `/var/www/cloudbox/frontend/dist`.
 - [ ] Nginx config berisi proxy `/api/` ke `127.0.0.1:5000`.
-- [ ] Nginx config berisi proxy `/sites/riansyah/` ke `127.0.0.1:8081`.
+- [ ] Nginx config berisi proxy `/sites/gustikrisnapranata/` ke `127.0.0.1:8081`.
 - [ ] Nginx config berisi React Router fallback `try_files $uri /index.html`.
 - [ ] Systemd service berisi `Requires=docker.service`.
 - [ ] Systemd service berisi `EnvironmentFile=/var/www/cloudbox/backend/.env`.

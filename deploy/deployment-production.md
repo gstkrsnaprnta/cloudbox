@@ -177,7 +177,7 @@ Buka di browser:
 ```txt
 http://kloudbox.my.id/
 http://kloudbox.my.id/api/health
-http://kloudbox.my.id/sites/riansyah/
+http://kloudbox.my.id/sites/gustikrisnapranata/
 ```
 
 Setelah Certbot pada tahap berikutnya:
@@ -185,7 +185,7 @@ Setelah Certbot pada tahap berikutnya:
 ```txt
 https://kloudbox.my.id/
 https://kloudbox.my.id/api/health
-https://kloudbox.my.id/sites/riansyah/
+https://kloudbox.my.id/sites/gustikrisnapranata/
 ```
 
 ## Important Scope Note

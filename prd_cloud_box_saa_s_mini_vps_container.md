@@ -272,7 +272,7 @@ Dashboard user menampilkan:
 Contoh informasi dashboard:
 
 ```txt
-Nama Box      : cloudbox-riansyah
+Nama Box      : cloudbox-gustikrisnapranata
 Status        : Running
 Paket         : Student Box
 RAM           : 128 MB
@@ -282,7 +282,7 @@ SSH Port      : 2201
 Username      : student
 Password      : ********
 Folder Web    : /home/student/public_html
-Website URL   : https://cloudbox.online/sites/riansyah
+Website URL   : https://cloudbox.online/sites/gustikrisnapranata
 ```
 
 ---
@@ -298,7 +298,7 @@ ssh student@cloudbox.online -p 2201
 Setelah login, user berada di container:
 
 ```bash
-student@cloudbox-riansyah:~$
+student@cloudbox-gustikrisnapranata:~$
 ```
 
 Command yang boleh dicoba user:
@@ -345,13 +345,13 @@ scp -P 2201 -r my-website/* student@cloudbox.online:/home/student/public_html/
 Setelah upload, website dapat diakses melalui:
 
 ```txt
-https://cloudbox.online/sites/riansyah
+https://cloudbox.online/sites/gustikrisnapranata
 ```
 
 Atau jika menggunakan subdomain:
 
 ```txt
-https://riansyah.cloudbox.online
+https://gustikrisnapranata.cloudbox.online
 ```
 
 Untuk MVP, gunakan path-based routing agar lebih mudah:
@@ -744,8 +744,8 @@ Request:
 
 ```json
 {
-  "name": "Riansyah",
-  "email": "riansyah@example.com",
+  "name": "Gustikrisnapranata",
+  "email": "gustikrisnapranata@example.com",
   "password": "password123"
 }
 ```
@@ -757,8 +757,8 @@ Response:
   "message": "Register success",
   "user": {
     "id": 1,
-    "name": "Riansyah",
-    "email": "riansyah@example.com"
+    "name": "Gustikrisnapranata",
+    "email": "gustikrisnapranata@example.com"
   }
 }
 ```
@@ -776,7 +776,7 @@ Response:
   "token": "jwt_token",
   "user": {
     "id": 1,
-    "name": "Riansyah",
+    "name": "Gustikrisnapranata",
     "role": "user"
   }
 }
@@ -874,13 +874,13 @@ Response:
 ```json
 {
   "id": 1,
-  "name": "cloudbox-riansyah",
+  "name": "cloudbox-gustikrisnapranata",
   "status": "RUNNING",
   "ssh_host": "cloudbox.online",
   "ssh_port": 2201,
   "username": "student",
   "web_folder": "/home/student/public_html",
-  "public_url": "https://cloudbox.online/sites/riansyah"
+  "public_url": "https://cloudbox.online/sites/gustikrisnapranata"
 }
 ```
 
@@ -1098,8 +1098,8 @@ Untuk membuat container user demo:
 
 ```bash
 docker run -dit \
-  --name cloudbox-riansyah \
-  --hostname cloudbox-riansyah \
+  --name cloudbox-gustikrisnapranata \
+  --hostname cloudbox-gustikrisnapranata \
   --memory=128m \
   --memory-swap=128m \
   --cpus=0.2 \
@@ -1119,25 +1119,25 @@ docker ps
 Untuk stop:
 
 ```bash
-docker stop cloudbox-riansyah
+docker stop cloudbox-gustikrisnapranata
 ```
 
 Untuk start:
 
 ```bash
-docker start cloudbox-riansyah
+docker start cloudbox-gustikrisnapranata
 ```
 
 Untuk restart:
 
 ```bash
-docker restart cloudbox-riansyah
+docker restart cloudbox-gustikrisnapranata
 ```
 
 Untuk delete/reset:
 
 ```bash
-docker rm -f cloudbox-riansyah
+docker rm -f cloudbox-gustikrisnapranata
 ```
 
 ---
@@ -1224,7 +1224,7 @@ server {
         proxy_set_header X-Forwarded-Proto $scheme;
     }
 
-    location /sites/riansyah/ {
+    location /sites/gustikrisnapranata/ {
         proxy_pass http://127.0.0.1:8081/;
         proxy_http_version 1.1;
         proxy_set_header Host $host;
@@ -1249,7 +1249,7 @@ sudo systemctl reload nginx
 
 Catatan:
 
-1. Untuk MVP satu user, routing `/sites/riansyah/` cukup.
+1. Untuk MVP satu user, routing `/sites/gustikrisnapranata/` cukup.
 2. Untuk banyak user, backend dapat membuat file snippet Nginx per user atau menggunakan pola reverse proxy dinamis.
 3. Untuk tugas, satu user demo sudah cukup.
 
@@ -1349,7 +1349,7 @@ Jika menggunakan subdomain user:
 Untuk MVP, wildcard tidak wajib karena URL website user bisa menggunakan path:
 
 ```txt
-https://cloudbox.online/sites/riansyah
+https://cloudbox.online/sites/gustikrisnapranata
 ```
 
 ---
@@ -1638,7 +1638,7 @@ echo '<h1>Hello from CloudBox</h1>' > index.html
 14. Buka browser:
 
 ```txt
-https://cloudbox.online/sites/riansyah
+https://cloudbox.online/sites/gustikrisnapranata
 ```
 
 15. Website berhasil tampil.
@@ -1671,7 +1671,7 @@ Untuk tugas dan demo, gunakan konfigurasi berikut:
 3. RAM container 128MB atau 256MB.
 4. Port SSH container: 2201.
 5. Port web container: 8081.
-6. URL website: `/sites/riansyah`.
+6. URL website: `/sites/gustikrisnapranata`.
 7. Database SQLite.
 8. Xendit test mode.
 9. Domain `.online` dengan HTTPS.
@@ -1748,7 +1748,7 @@ scp -P 2201 -r my-website/* student@cloudbox.online:/home/student/public_html/
 ### Buka website user
 
 ```txt
-https://cloudbox.online/sites/riansyah
+https://cloudbox.online/sites/gustikrisnapranata
 ```
 
 ---

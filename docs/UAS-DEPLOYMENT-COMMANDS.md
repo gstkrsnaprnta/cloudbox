@@ -255,13 +255,13 @@ scp -P 2201 -r my-website/* student@kloudbox.my.id:/home/student/public_html/
 Buka:
 
 ```txt
-http://kloudbox.my.id/sites/riansyah/
+http://kloudbox.my.id/sites/gustikrisnapranata/
 ```
 
 Setelah HTTPS tahap berikutnya:
 
 ```txt
-https://kloudbox.my.id/sites/riansyah/
+https://kloudbox.my.id/sites/gustikrisnapranata/
 ```
 
 ## 26. Setup Certbot Setelah DNS Aktif
@@ -285,5 +285,5 @@ Buka:
 
 ```txt
 https://kloudbox.my.id/
-https://kloudbox.my.id/sites/riansyah/
+https://kloudbox.my.id/sites/gustikrisnapranata/
 ```
