@@ -22,6 +22,7 @@ export function Nav() {
       <nav className="navlinks">
         <NavLink to="/pricing">Pricing</NavLink>
         {user ? <NavLink to="/dashboard">Dashboard</NavLink> : null}
+        {user?.role === "admin" ? <NavLink to="/admin">Admin</NavLink> : null}
       </nav>
       <div className="nav-actions">
         {user ? (
