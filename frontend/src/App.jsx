@@ -1,6 +1,7 @@
 import { Navigate, Route, Routes } from "react-router-dom";
 import { Nav } from "./components/Nav";
 import { AuthPage } from "./pages/Auth";
+import { Admin } from "./pages/Admin";
 import { Dashboard } from "./pages/Dashboard";
 import { Landing } from "./pages/Landing";
 import { Pricing } from "./pages/Pricing";
@@ -15,6 +16,7 @@ export function App() {
         <Route path="/register" element={<AuthPage mode="register" />} />
         <Route path="/login" element={<AuthPage mode="login" />} />
         <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="/admin" element={<Admin />} />
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     </>

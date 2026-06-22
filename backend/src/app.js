@@ -3,6 +3,7 @@ import express from "express";
 import morgan from "morgan";
 import { ZodError } from "zod";
 import { env } from "./config/env.js";
+import adminRoutes from "./routes/adminRoutes.js";
 import authRoutes from "./routes/authRoutes.js";
 import boxRoutes from "./routes/boxRoutes.js";
 import orderRoutes from "./routes/orderRoutes.js";
@@ -46,6 +47,7 @@ app.use("/api/packages", packageRoutes);
 app.use("/api/orders", orderRoutes);
 app.use("/api/boxes", boxRoutes);
 app.use("/api/xendit", xenditRoutes);
+app.use("/api/admin", adminRoutes);
 
 app.use((req, res) => {
   res.status(404).json({ message: "Route not found." });
